@@ -1,0 +1,20 @@
+Project Proposal-
+Team Name-Green Monkeys
+
+Project Title-Wine Match/Scarf/Put a Cork in it
+
+Team Members-Anthony, Mike B, Mark, John
+
+Project Description- A web app that uses chef watson api to determine a recipe from ingredients, and then using an ajax call to the wine.com api, pairing a wine with the aforementioned meal
+
+Sketch of Final Product-
+
+APIs to Be Used- Chef Watson, Wine.com
+
+Rough Breakdown of Tasks-
+Html-Mike/Anthony/Austin
+css-Mike/Anthony/Austin
+js-Mark
+VD-Anthony/Mike/Austin
+Planning/organization-Mark
+Presentation-Austin leads
