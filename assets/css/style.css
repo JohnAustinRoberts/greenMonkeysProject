@@ -5,6 +5,8 @@
 	background: rgba(54, 25, 25, 0);
 	font-family: 'Cedarville Cursive', cursive;
 	font-family: 'Tangerine', cursive;
+	text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+
 }
 
 #titleLine{
@@ -39,9 +41,10 @@
 	text-align: center;
 }
 */
-body{
+.bg{
  background-image: url(../images/pexels-photo-160123.jpeg);                    
     background-size: cover;
     background-repeat:   no-repeat;
+    background-attachment: fixed;
     background-position: center center; 
 }
