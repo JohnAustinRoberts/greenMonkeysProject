@@ -18,5 +18,5 @@ var ingredients = {
 "alligator" :["california cabernet", "bordeaux", "riesling"]
 "deer/venison" : ["cabernet", "petit syrah", "merlot"]
 "vegetarian" : ["pinot noir", "syrah", "pinot nero"]
-all others : ["chardonnay", "pinor noir", "merlot", "malbec", "riesling", "valpolicella"]
+"default" : ["chardonnay", "pinor noir", "merlot", "malbec", "riesling", "valpolicella"]
 };
