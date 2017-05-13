@@ -1,13 +1,13 @@
 
-//$(document).ready(function(){
+$(document).ready(function(){
 
   var userSearch = "";
   var searchType = "food"; //may change to wine based on user selection
   var stateID = "NJ"; //default NJ for testing
   var priceChoice = 0;
   var priceRange = ["0.00-15.00","15.01-30.00","30.01-50.00","50.01-1000.00"];
-  var foodComKey = "";
-  var wineComKey = "";
+  var foodComKey = [];
+  var wineComKey = [];
   var foodUrl = "";
   var wineUrl = "";
   var apiKeys = {
@@ -25,14 +25,14 @@
         apiKeys.food = response.foodKey;
         apiKeys.wine = response.wineKey;
         if(typeof callback === "function"){
-          callback(apiKeys);
+          //callback(apiKeys);
         }
     }).fail(function(err){
       callback("failed:" + JSON.stringify(err));
     });
   };
 
-  loadAPIKeys();
+  loadAPIKeys(logIt);
 
   function logIt(thing){
     console.log(JSON.stringify(thing));
@@ -107,7 +107,14 @@
       url: wUrl,
       dataType: "jsonp"
     }).done(function(response){
-      console.log(response);
+      wineResults.push([userSearch, response]);
+      if(wineResults.length > 5){
+        wineResults.shift()
+      }
+
+      if(typeof callback === "function"){
+        callback(wineResultss);
+      }
     }).fail(function(err){
       console.log(err);
     });
@@ -122,7 +129,10 @@
       dataType: "json"
       // jsonpCallback: 'callback'
     }).done(function(response){
-      console.log(response);
+      foodResults.push([userSearch, response])
+      if(typeof callback === "function"){
+        callback(foodResults);
+      }
     }).fail(function(err){
       console.log(err);
     });
@@ -134,5 +144,5 @@
   }
 
   //store recent searches??
-//});
+});
 
