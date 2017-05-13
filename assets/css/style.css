@@ -1,3 +1,14 @@
 .panel-body {
-	display: none;
+	display:;
+}
+
+footer {
+      position: fixed;
+      bottom: 0;
+      padding: 20px;
+      background-color: #4aaaa5;
+      width: 100%;
+      text-align: center;
+    }
+
 }
