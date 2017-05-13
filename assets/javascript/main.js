@@ -3,7 +3,7 @@
 
   var userSearch = "";
   var searchType = "food"; //may change to wine based on user selection
-  var stateID = "";
+  var stateID = "NJ"; //default NJ for testing
   var priceChoice = 0;
   var priceRange = ["0.00-15.00","15.01-30.00","30.01-50.00","50.01-1000.00"];
   var foodComKey = "";
@@ -32,13 +32,12 @@
     });
   };
 
-  loadAPIKeys(storIt);
+  loadAPIKeys();
 
-  function storIt(thing){
-    console.log(apiKeys.food, apiKeys.wine)
+  function logIt(thing){
+    console.log(JSON.stringify(thing));
   }
 
-  //ToDo
   //listen for submit on each "tab"
   $("#submit").on("click", function(event){
     //Grab the user inputs
@@ -48,22 +47,26 @@
     //need grab rest of inputs here
 
     //Call input validation, display error if found
-    var validation =  checkInputsAreValid(userSearch, price, state );
+    var validation =  checkInputsAreValid(userSearch, stateID);
     if(validation[0] === false){
       //show an error message here if the inputs arent good and bail continuation
-      console.log(validation[1])
+      console.log(validation[1]) //put this in a modal?
       return;
     }
 
-    //Make the inputs into the URL Link to Query the Food API
+    //Make the inputs into the URL 
     if(searchType === "wine"){
-      wineUrl = makeSeachIntoWineURL(wineTypeSearch)
-    } else {
-      foodUrl = makeSeachIntoFoodURL(wineTypeSearch)
-    }
-    //API call the recipes based on user inputs
-    getWines(wineUrl, logit);
+      //Create the formatted url
+      wineUrl = makeSeachIntoWineURL(userSearch)
+      //API call the recipes based on user inputs
+      getWines(wineUrl, logIt);
 
+    } else {
+      //Create the formatted url
+      foodUrl = makeSeachIntoFoodURL(userSearch)
+      //API call the recipes based on user inputs
+      getFoods(foodUrl, logIt);
+    }
   });
 
   //Allow the user to push enter on the input"
@@ -76,8 +79,8 @@
 
 
   //validate the inputs are not all blank
-  function checkInputsAreValid(wSearch, fSearch, price, state){
-    if (wSearch + fSearch === ""){
+  function checkInputsAreValid(uSearch, state){
+    if (uSearch === ""){
       return [false, "Must enter a search criteria."];
     } else if(state === ""){
       return [false, "Please enter a state."];
@@ -87,25 +90,41 @@
   }
 
   function makeSeachIntoWineURL(userSearch){
-    var srch = userSearch.replace(/\s/g, "+");
-    return "http://services.wine.com/api/beta2/service.svc/JSON//catalog?search=" + srch+ "&size=5&offset=10&apikey=" + "9423d2c8326f4d2c768425852bce8030";
+    var srch = userSearch.replace(/\s/g, "%20");
+    return "http://services.wine.com/api/beta2/service.svc/JSON//catalog?search=" + srch+ "&size=5&offset=10&apikey=" + apiKeys.wine;
   }
 
-  //parse the results
-  function findVinyardLocations(qResults){
-    
-
+  function makeSeachIntoFoodURL(userSearch){
+    var srch = userSearch.replace(/\s/g, "%20");
+    return "http://food2fork.com/api/search?key=" + apiKeys.food + "&q=" + srch;
   }
+
 
   //Query the wine api (or vice versa) for the matching wines
-  function getWines(wineUrl, callback){
+  function getWines(wUrl, callback){
     $.ajax({
       method: "GET",
-      url: wineUrl,
-      success: function(response){
-        foodResults = response;
-        callback(foodResults);
-      }
+      url: wUrl,
+      dataType: "jsonp"
+    }).done(function(response){
+      console.log(response);
+    }).fail(function(err){
+      console.log(err);
+    });
+  }
+
+  //Query the food api (or vice versa) for the matching foods
+  function getFoods(fUrl, callback){
+    console.log(fUrl)
+    $.ajax({
+      method: "GET",
+      url: fUrl,
+      dataType: "json"
+      // jsonpCallback: 'callback'
+    }).done(function(response){
+      console.log(response);
+    }).fail(function(err){
+      console.log(err);
     });
   }
 
