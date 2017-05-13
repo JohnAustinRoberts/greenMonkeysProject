@@ -1,31 +1,31 @@
 #tagLine{
-    opacity: 0.3;
-    filter: alpha(opacity=30);
-    font-family: ‘Cedarville Cursive’, cursive;
-    font-family: ‘Tangerine’, cursive;
+	background: rgb(54, 25, 25);
+	background: rgba(54, 25, 25, 0);
+	font-family: 'Cedarville Cursive', cursive;
+	font-family: 'Tangerine', cursive;
+	text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+
 }
 
 #titleLine{
-    opacity: 1.0;
-    filter: alpha(opacity=100);
-    font-family: ‘Cedarville Cursive’, cursive;
-    font-family: ‘Tangerine’, cursive;
+	opacity: 1.0;
+	filter: alpha(opacity=100);
+	font-family: 'Cedarville Cursive', cursive;
+	font-family: 'Tangerine', cursive;
 }
 
+
+
+
 #foodtext{
-    opacity: 0.3;
-    filter: alpha(opacity=30);
+	opacity: 0.3;
+	filter: alpha(opacity=30);
 }
 
 #searchLabel{
-    color: white;
+	color: white;
 }
 
-
-
-.panel-body {
-    display:;
-}
 
 /*.subfooter {
     float: bottom;
@@ -33,12 +33,13 @@
     width: 100%;
     text-align: center;
 }
-*/
-body{
-background-image: url(../images/pexels-photo.jpeg);                    
-   background-size: cover;
-   background-repeat:   no-repeat;
-   background-position: center center;
-}
 
+*/
+.bg{
+ background-image: url(../images/pexels-photo-160123.jpeg);                    
+    background-size: cover;
+    background-repeat:   no-repeat;
+    background-attachment: fixed;
+    background-position: center center; 
+}
 

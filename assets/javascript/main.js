@@ -1,49 +1,72 @@
 
 $(document).ready(function(){
 
-  var proteinSearch = "";
-  var vegSearch = "";
-  var starchSearch = "";
-  var stateID = "";
-  var priceRange = 0;
+  var userSearch = "";
+  var searchType = "food"; //may change to wine based on user selection
+  var stateID = "NJ"; //default NJ for testing
+  var priceChoice = 0;
   var priceRange = ["0.00-15.00","15.01-30.00","30.01-50.00","50.01-1000.00"];
+  var foodComKey = [];
+  var wineComKey = [];
+  var foodUrl = "";
+  var wineUrl = "";
+  var apiKeys = {
+    food: "",
+    wine: ""
+  };
 
   //Load in the API Keys
-  $.ajax({
-    method: "GET",
-    url: "../config.json",
-    dataType: "jsonp",
-    success: function(response){
-      console.log(response);
-    }
-  });
+ function loadAPIKeys(callback){
+    $.ajax({
+      method: "GET",
+      url: "../config.json",
+      dataType: "json"
+    }).done(function(response){
+        apiKeys.food = response.foodKey;
+        apiKeys.wine = response.wineKey;
+        if(typeof callback === "function"){
+          //callback(apiKeys);
+        }
+    }).fail(function(err){
+      callback("failed:" + JSON.stringify(err));
+    });
+  };
 
-  //ToDo
+  loadAPIKeys(logIt);
+
+  function logIt(thing){
+    console.log(JSON.stringify(thing));
+  }
+
   //listen for submit on each "tab"
   $("#submit").on("click", function(event){
     //Grab the user inputs
     event.preventDefault();
-
-    proteinSearch = $("#protein").val().trim().toLowerCase();
-    vegSearch = $("#vegetable").val().trim().toLowerCase();
-    starchSearch = $("#starch").val().trim().toLowerCase();
-    //priceRange = $("#starch").val().trim().toLowerCase();
-    //stateID = $("#starch").val().trim().toLowerCase();
+    userSearch = $("#foodtext").val().trim().toLowerCase();
+    //searchType = $("#typeGroup").val().trim().toLowerCase(); //determine type here
+    //need grab rest of inputs here
 
     //Call input validation, display error if found
-    var validation =  checkInputsAreValid(proteinSearch, vegSearch, starchSearch);
+    var validation =  checkInputsAreValid(userSearch, stateID);
     if(validation[0] === false){
       //show an error message here if the inputs arent good and bail continuation
-      console.log(validation[1])
+      console.log(validation[1]) //put this in a modal?
       return;
     }
 
-    //Make the inputs into the URL Link to Query the Food API
-    foodUrl = makeSeachIntoFoodURL(proteinSearch, vegSearch, starchSearch)
+    //Make the inputs into the URL 
+    if(searchType === "wine"){
+      //Create the formatted url
+      wineUrl = makeSeachIntoWineURL(userSearch)
+      //API call the recipes based on user inputs
+      getWines(wineUrl, logIt);
 
-    //API call the recipes based on user inputs
-    getRecipes(foodURL);
-
+    } else {
+      //Create the formatted url
+      foodUrl = makeSeachIntoFoodURL(userSearch)
+      //API call the recipes based on user inputs
+      getFoods(foodUrl, logIt);
+    }
   });
 
   //Allow the user to push enter on the input"
@@ -56,8 +79,8 @@ $(document).ready(function(){
 
 
   //validate the inputs are not all blank
-  function checkInputsAreValid(pSearch, vSearch, sSearch, price, state){
-    if (pSearch + vSearch + sSearch === ""){
+  function checkInputsAreValid(uSearch, state){
+    if (uSearch === ""){
       return [false, "Must enter a search criteria."];
     } else if(state === ""){
       return [false, "Please enter a state."];
@@ -66,33 +89,53 @@ $(document).ready(function(){
     }
   }
 
-  function makeSearchIntoFoodURL(protein, veg, starch){
-
+  function makeSeachIntoWineURL(userSearch){
+    var srch = userSearch.replace(/\s/g, "%20");
+    return "http://services.wine.com/api/beta2/service.svc/JSON//catalog?search=" + srch+ "&size=5&offset=10&apikey=" + apiKeys.wine;
   }
 
-  //Query the food API (or vice versa)
-  function getRecipes(foodUrl, callBack){
-    //Load in the API Keys
-    $.ajax({
-      method: "GET",
-      url: foodUrl,
-      dataType: "jsonp",
-      success: function(response){
-        foodResults = response;
-        callBack(foodResults);
-      }
-    });
-
+  function makeSeachIntoFoodURL(userSearch){
+    var srch = userSearch.replace(/\s/g, "%20");
+    return "http://food2fork.com/api/search?key=" + apiKeys.food + "&q=" + srch;
   }
 
-  //parse the results
-  function findKeySearchItemsFromRecipes(){
-
-  }
 
   //Query the wine api (or vice versa) for the matching wines
-  function getWines(){
+  function getWines(wUrl, callback){
+    $.ajax({
+      method: "GET",
+      url: wUrl,
+      dataType: "jsonp"
+    }).done(function(response){
+      wineResults.push([userSearch, response]);
+      if(wineResults.length > 5){
+        wineResults.shift()
+      }
 
+      if(typeof callback === "function"){
+        callback(wineResultss);
+      }
+    }).fail(function(err){
+      console.log(err);
+    });
+  }
+
+  //Query the food api (or vice versa) for the matching foods
+  function getFoods(fUrl, callback){
+    console.log(fUrl)
+    $.ajax({
+      method: "GET",
+      url: fUrl,
+      dataType: "json"
+      // jsonpCallback: 'callback'
+    }).done(function(response){
+      foodResults.push([userSearch, response])
+      if(typeof callback === "function"){
+        callback(foodResults);
+      }
+    }).fail(function(err){
+      console.log(err);
+    });
   }
 
   //return the results to the page 
