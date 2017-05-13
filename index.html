@@ -3,43 +3,44 @@
 
 <head>
 
-    <title>Put A Cork With It</title>
+    <title>Pair A Cork With It</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Cedarville+Cursive|Tangerine" rel="stylesheet">
 </head>
 
 <body>
 
 <div class="container">
-   <div class="jumbotron">
-       <h1 class="text-center">Put A Cork With It</h1>
+   <div class="jumbotron" id="tagLine">
+       <h1 class="text-center" id="titleLine">Pair A Cork With It</h1>
 
    </div>
    <div class="navigation">
     <ul class="nav nav-tabs nav-justified">
-       <li class ="active"><a href="#">With Food</a></li>
-       <li><a href="#">With Wine</a></li>
+       <li class ="active" id="foodtab"><a href="#">With Food</a></li>
+       <li id="winetab"><a href="#">With Wine</a></li>
    </ul>
    </div>
 
 
 <div class="row">
-        <div class="col-lg-12">
+        <div class="col-xs-6 col-md-3">
             </div>
             <div class="panel-body">
               <form>
                 <div class="form-group">
-                  <label for="meal">What's on the menu?</label>
-                  <input class="form-control" id="protein" type="text">
+                  <label for="food" id="searchLabel">What's on the menu?</label>
+                  <input class="form-control" id="foodtext" type="text" placeholder="ex. chicken, tacos, etc">
                 </div>
             
                 <button class="btn btn-primary" id="submit" type="submit">Submit</button>
               </form>
             </div>
           </div>
-        <div class="subfooter">
+       <!-- <div class="subfooter">
          <div>&copy greenMonkeysProject 2017</div>
-        </div>
+        </div> -->
         </div>
 
    
