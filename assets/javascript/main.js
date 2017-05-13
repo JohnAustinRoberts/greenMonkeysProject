@@ -155,7 +155,7 @@ $(document).ready(function(){
 
   //return the results to the page 
   function renderResults(){
-
+    //append things to DOM
   }
 
   //store recent searches??
