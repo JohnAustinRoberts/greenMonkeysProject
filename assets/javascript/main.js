@@ -38,11 +38,24 @@ $(document).ready(function(){
     console.log(JSON.stringify(thing));
   }
 
+  //Toggle between wine and food search
+  $(".nav-tabs").on("click", function(event){
+    var clicked = event.target.parentNode.id;//Determine the clicked tab
+    var active = $(".active").attr("id");//Determine the active tab
+    if (clicked !== active){
+      $("#" + active).toggleClass("active");
+      $("#" + clicked).toggleClass("active");
+    }
+  })
+
   //listen for submit on each "tab"
   $("#submit").on("click", function(event){
     //Grab the user inputs
     event.preventDefault();
     userSearch = $("#foodtext").val().trim().toLowerCase();
+    searchType = $(".active").attr("id").slice(0,4);
+    console.log(searchType)
+    return
     //need grab rest of inputs here
 
     //Call input validation, display error if found
