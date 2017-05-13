@@ -1,5 +1,15 @@
-.subfooter {
-	background-color: #DCDCDC;
-	width: 100%;
-	text-align: center;
+
+.panel-body {
+	display:;
+}
+
+footer {
+      position: fixed;
+      bottom: 0;
+      padding: 20px;
+      background-color: #4aaaa5;
+      width: 100%;
+      text-align: center;
+    }
+
 }
