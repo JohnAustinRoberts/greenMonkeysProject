@@ -21,3 +21,37 @@ var ingredients = {
 "vegetarian" : ["pinot noir", "syrah", "pinot nero"],
 "default" : ["chardonnay", "pinor noir", "merlot", "malbec", "riesling", "valpolicella"]
 };
+
+var varietals = {
+  "cabernet": [],
+  "pinot noir": [],
+  "merlot": [],
+  "chianti": [],
+  "malbec": [],
+  "petit syrah": [],
+  "syrah": [],
+  "pinot nero": [],
+  "zinfindel": [],
+  "cotes du rhone": [],
+  "chardonnay": [],
+  "pinot grisio": [],
+  "pinot gris": [],
+  "dry riesling": [],
+  "valpolicella": [],
+  "suavignon blanc": [],
+  "rose": [],
+  "pinotage": [],
+  "beujolais": [],
+  "barolo": [],
+  "brunello": [],
+  "white zinfindel": [],
+  "riesling": [],
+  "prosecco": [],
+  "french burgandy": [],
+  "light merlot": [],
+  "white burgandy": [],
+  "california cabernet": [],
+  "bordeaux": [],
+  "buttery chardonnay": [],
+  "rose grenache": []
+}
