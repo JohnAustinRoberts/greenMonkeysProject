@@ -8,6 +8,7 @@ $(document).ready(function(){
   var priceRange = ["0.00-15.00","15.01-30.00","30.01-50.00","50.01-1000.00"];
   var foodResults = [];
   var wineResults = [];
+
   var foodUrl = "";
   var wineUrl = "";
   var apiKeys = {
@@ -43,6 +44,7 @@ $(document).ready(function(){
     //Grab the user inputs
     event.preventDefault();
     userSearch = $("#foodtext").val().trim().toLowerCase();
+
     //need grab rest of inputs here
 
     //Call input validation, display error if found
@@ -128,6 +130,7 @@ $(document).ready(function(){
       dataType: "json"
       // jsonpCallback: 'callback'
     }).done(function(response){
+
       foodResults.push([userSearch, response]);
       if(foodResults.length > 5){
         foodResults.shift()
