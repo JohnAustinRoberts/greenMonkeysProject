@@ -25,6 +25,13 @@
     text-align: center;
 }
 
+#results {
+    width: 75%;
+    margin-left: 120px;
+    opacity: 0.8;
+    display: ;
+}
+
 footer {
     position: fixed;
     bottom: 0;
