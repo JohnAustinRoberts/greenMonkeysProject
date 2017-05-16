@@ -310,7 +310,7 @@ $(document).ready(function(){
   function extractWineResults(obj){
     //Extract the predefined number of results from the object
     for(var i = 0 ; i < numResults ; i++){
-      currentWineResults[0].push(obj.Products.List[i].Ratings.Highestscore);
+      currentWineResults[0].push(obj.Products.List[i].Ratings.HighestScore);
       currentWineResults[1].push(obj.Products.List[i].Name);
       currentWineResults[2].push(obj.Products.List[i].Labels[0].Url);
       currentWineResults[3].push(obj.Products.List[i].Vineyard.Name);
