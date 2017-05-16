@@ -10,16 +10,22 @@ $(document).ready(function(){
   var stateID = "NJ"; //default NJ for testing
   var foodUrl = "";
   var wineUrl = "";
-  var priceChoice = 0;
-  var priceRange = ["0.00-15.00","15.01-30.00","30.01-50.00","50.01-1000.00"];
+  var priceChoice = 4;
+  var numResults = 5;
+  var priceRange = ["0.00|15.00","15.01|30.00","30.01|50.00","50.01|1000.00", "00.00|10000.00" ];
   var foodResults = [];
   var wineResults = [];
-  var validChars = ["a","b","c","d","e","f",
-                    "g","h","i","j","k","l",
-                    "m","n","o","p","q","r",
-                    "s","t","u","v","w","x",
-                    "y","z","1","2","3","4",
-                    "5","6","7","8","9"," "];
+  var currentFoodResults = [[],[],[],[],[]];
+  var currentWineResults = [[],[],[],[],[],[],[]];
+  var validChars = [
+    "a","b","c","d","e","f",
+    "g","h","i","j","k","l",
+    "m","n","o","p","q","r",
+    "s","t","u","v","w","x",
+    "y","z","1","2","3","4",
+    "5","6","7","8","9"," ",
+    "-"
+  ];
 
   //Load in the API Keys
  function loadAPIKeys(){
@@ -36,11 +42,6 @@ $(document).ready(function(){
   };
 
   loadAPIKeys();
-
-  //Helper function that will console log
-  function logIt(thing){
-    console.log(JSON.stringify(thing));
-  }
 
   //Toggle between wine and food search
   $(".nav-tabs").on("click", function(event){
@@ -66,7 +67,6 @@ $(document).ready(function(){
 
     //Call input validation, display error if found
     var validation =  checkInputsAreValid(userSearch, stateID);
-    console.log(validation);
     if(validation[0] === false){
       //show an error message here if the inputs arent good and bail continuation
       console.log(validation[1]) //put this in a modal?
@@ -75,23 +75,31 @@ $(document).ready(function(){
 
     //Make the inputs into the URL and call the API
     if(searchType === "wine"){
+      //Reset results holders
+      currentFoodResults = [[],[],[],[],[]];
+      currentWineResults = [[],[],[],[],[],[],[]];
 
       //Create the formatted urls
       wineUrl = makeSearchIntoWineURL(userSearch);
       foodUrl = makeSearchIntoFoodURL(matchWineToFood(userSearch));
 
       //API call the recipes based on user inputs
-
-      //getWines(wineUrl, renderResults);
+      getWines(wineUrl, extractWineResults(renderResults));
+      getFoods(foodUrl, extractFoodResults(renderResults));
 
     } else { //If not a wine search always default to a primary food search
+      //Reset results holders
+      currentFoodResults = [[],[],[],[],[]];
+      currentWineResults = [[],[],[],[],[],[],[]];
 
       //Create the formatted urls
       foodUrl = makeSearchIntoFoodURL(userSearch);
       wineUrl = makeSearchIntoWineURL(matchFoodToWine(userSearch));
-
+   
       //API call the recipes based on user inputs
-      //getFoods(foodUrl, renderResults);
+      getFoods(foodUrl, extractFoodResults);
+      getWines(wineUrl, extractWineResults);
+
     }
   });
 
@@ -102,7 +110,6 @@ $(document).ready(function(){
       $("#submit").click();
     }
   });
-
 
   //validate the inputs are not blank and have valid characters
   function checkInputsAreValid(uSearch, state){
@@ -131,14 +138,25 @@ $(document).ready(function(){
     return [true]; //Return true if pass all checks
   }
 
+  //Assembles the wine search URL based on user search criteria. Search
+  //terms are expected to be passed in space delimited format
   function makeSearchIntoWineURL(userSearch){
-    var srch = userSearch.replace(/\s/g, "%20");
-    return "http://services.wine.com/api/beta2/service.svc/JSON//catalog?search=" + srch+ "&size=5&offset=10&apikey=" + apiKeys.wine;
+    var srch = userSearch.replace(/\s/g, "+");
+    return "http://services.wine.com/api/beta2/service.svc/JSON//catalog?" + 
+      "search=" + srch +
+      "&size=" + 30 + 
+      "&offset=" + 0 + 
+      "&state=" + stateID + 
+      "&filter=price(" + priceRange[priceChoice] + ")" +  
+      "&apikey=" + apiKeys.wine;
   }
 
+  //Assembles the Food search URL based on user search criteria. Search
+  //terms are expected to be passed in space delimited format
   function makeSearchIntoFoodURL(userSearch){
     var srch = userSearch.replace(/\s/g, "%20");
-    return "http://food2fork.com/api/search?key=" + apiKeys.food + "&q=" + srch;
+    return "http://food2fork.com/api/search?key=" + apiKeys.food + 
+      "&q=" + srch;
   }
 
 
@@ -155,7 +173,7 @@ $(document).ready(function(){
       }
 
       if(typeof callback === "function"){
-        callback(wineResults[0][1]);
+        callback(wineResults[wineResults.length - 1][1]);
       }
     }).fail(function(err){
       console.log(err);
@@ -175,7 +193,7 @@ $(document).ready(function(){
         foodResults.shift()
       }
       if(typeof callback === "function"){
-        callback(foodResults[0][1]);
+        callback(foodResults[foodResults.length -1][1]);
       }
     }).fail(function(err){
       console.log(err);
@@ -186,7 +204,6 @@ $(document).ready(function(){
   //This is the "secret sauce" section of the code which determines the "match"
   //between the food and the wine
   function matchFoodToWine(uSearch){
-    var sendToSearch = "";            //Will hold the value of the final varietal to send to wine search
     var terms = uSearch.split(" ");   //break the user search into an array of words
     var items = [];                   //Holds list of all wine matches based on search terms 
     var i = terms.length - 1;         //Iterator
@@ -201,16 +218,19 @@ $(document).ready(function(){
 
     //If no matches were found take the default wines
     if(items.length === 0){
-      items = items.concat(ingredients.default)
+      items = items.concat(ingredients.default);
     }
-
     items.sort();//sort items by alpha
-
     items = getMode(items);//get item(s) that appear most frequently
 
-    console.log(items, items.length);
+    //If there are more than 2 varietals to search then select 2
+    //at random. In the future this would be more sophisticated for 
+    //selection mechanism 
+    if (items.length > 1){
+      items = pickRandom(items); //returns two items from the array to search
+    }
 
-    return sendToSearch
+    return items;
   }
 
   //Function returns the item(s) that appears most frequently in an array
@@ -227,7 +247,7 @@ $(document).ready(function(){
     if (arrLen > 0){ //Only run if the arr parameter has values
       curWord = arr[0];
       //Create the Count Map Object
-      while(i < arrLen){
+      while(i < arrLen + 1){
         if (arr[i] === curWord){ //If same word seen again in array
           counter++; //increment counter
           countMap[curWord] = counter;
@@ -235,6 +255,7 @@ $(document).ready(function(){
           if(curHigh < counter){
             curHigh = counter; //Identifies the "mode" number eg. "3" times
           }
+          countMap[curWord] = counter;
           counter = 1; //reset counter
           curWord = arr[i]; //advance curWord to the curent word in loop
         }
@@ -244,7 +265,6 @@ $(document).ready(function(){
       //Go through the object and extract the keys with values = to curHigh
       objKeys = Object.keys(countMap);  //add the unique values from arr to an array
       i = 0;                            //reset iterator
-      console.log(countMap)
       while(i < objKeys.length){        
         if(countMap[objKeys[i]] !== curHigh){ //check each key value pair looking values that match the mode number
           objKeys.splice(i,1);                //remove keys from the array that are not matching the mode number
@@ -259,14 +279,56 @@ $(document).ready(function(){
     }
   }
 
+  //This function accepts an array of strings and selects one at random
+  //It returns a selected items
+  function pickRandom(arr){
+    if(arr.length > 1){           //only run if there are more than 1 items in teh array
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+  }
+
   //Takes the wine search query results and return the food search criteria
   function matchWineToFood(queryResults){
 
   }
 
+  //Take the results out of the food query and store them in an array - return the array
+  function extractFoodResults(obj){
+    //Extract the predefined number of results from the object
+    for(var i = 0 ; i < numResults ; i++){
+      currentFoodResults[0].push(obj.recipes[i].social_rank);
+      currentFoodResults[1].push(obj.recipes[i].title);
+      currentFoodResults[2].push(obj.recipes[i].image_url);
+      currentFoodResults[3].push(obj.recipes[i].publisher);
+      currentFoodResults[4].push(obj.recipes[i].source_url);
+    } 
+    console.log(currentFoodResults)
+    return currentFoodResults;
+  }
+
+  //Take the results out of the wine query and store them in an array - return the array
+  function extractWineResults(obj){
+    //Extract the predefined number of results from the object
+    for(var i = 0 ; i < numResults ; i++){
+      currentWineResults[0].push(obj.Products.List[i].Ratings.Highestscore);
+      currentWineResults[1].push(obj.Products.List[i].Name);
+      currentWineResults[2].push(obj.Products.List[i].Labels[0].Url);
+      currentWineResults[3].push(obj.Products.List[i].Vineyard.Name);
+      currentWineResults[4].push(obj.Products.List[i].Vintage);
+      currentWineResults[5].push(obj.Products.List[i].Retail.Price);
+      currentWineResults[6].push(obj.Products.List[i].Varietal.Name);
+    }
+    console.log(currentWineResults)
+    return currentWineResults;
+  }
+
   //return the results to the page 
-  function renderResults(){
+  function renderResults(disp){
     //append things to DOM
+    if(disp.length === 2){//Only run if both wine and food results are available
+      $("#results-area").empty();
+      $("#results-area").append(disp);
+    }
   }
 
   //store recent searches??
