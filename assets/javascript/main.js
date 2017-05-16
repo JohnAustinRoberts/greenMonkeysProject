@@ -42,7 +42,7 @@ $(document).ready(function(){
   $("#submit").on("click", function(event){
     //Grab the user inputs
     event.preventDefault();
-    userSearch = $("#protein").val().trim().toLowerCase();
+    userSearch = $("#foodtext").val().trim().toLowerCase();
     //searchType = $("#typeGroup").val().trim().toLowerCase(); //determine type here
     //need grab rest of inputs here
 
