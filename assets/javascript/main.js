@@ -172,6 +172,7 @@ $(document).ready(function(){
       if(wineResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         wineResults.shift()
       }
+      localStorage.setItem("wHistory", JSON.stringify(wineResults)); //Put local history in storage for later use
 
       if(typeof callback === "function"){
         callback(wineResults[wineResults.length - 1][1]);
@@ -193,6 +194,8 @@ $(document).ready(function(){
       if(foodResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         foodResults.shift()
       }
+      localStorage.setItem("fHistory", JSON.stringify(foodResults));//Put the history in local storage for later use
+
       if(typeof callback === "function"){
         callback(foodResults[foodResults.length -1][1]);
       }
@@ -360,6 +363,26 @@ $(document).ready(function(){
     }
   }
 
-  //store recent searches??
+  //function runs on page load and populates the history of searches
+  function pageInit(){
+    var nullTest = localStorage.fHistory;
+    if(nullTest !== null){ //Only run if there is info in localStorage
+      //restores prior results from last session
+      foodResults = JSON.parse(localStorage.fHistory);
+      wineResults = JSON.parse(localStorage.wHistory);
+      console.log(foodResults)
+      //clear anything that might be in search history
+      $("#search-history").empty();
+
+      //Add buttons with prior search terms
+      for(var i = 0 ; i < foodResults.length ; i++){
+        
+        $("#search-history").append(  
+          "<button class='btn history-button' id='" + foodResults[i][0] + "'>" + foodResults[i][0] + "</button>"
+        );
+      }
+    }
+  }
+  pageInit();
 });
 

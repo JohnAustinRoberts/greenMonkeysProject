@@ -24,7 +24,7 @@
 
 .buttons {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 7px;
 }
 
 .btn-primary {
@@ -42,7 +42,6 @@
 
 
 footer {
-    position: fixed;
     bottom: 0;
     padding: 10px;
     width: 100%;
@@ -50,24 +49,14 @@ footer {
     font-family: 'Cedarville Cursive', cursive;
     font-family: 'Tangerine', cursive;
     font-size: 40px;
-    background-color: #eee;
-    
+    color: white;   
+    text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
 }
-
-
 
 .panel-body {
 	display:;
 }
 
-/*.subfooter {
-	float: bottom;
-	background-color: #DCDCDC;
-	width: 100%;
-	text-align: center;
-}
-
-*/
 
 .bg {
     background-image: url(../images/pexels-photo-160123.jpeg);
@@ -75,4 +64,13 @@ footer {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center center;
+}
+
+#search-history{
+    text-align: center;
+}
+
+.history-button{
+    margin-right: 3px;
+    margin-left: 3px;
 }
