@@ -189,8 +189,7 @@ $(document).ready(function(){
       dataType: "json"
       // jsonpCallback: 'callback'
     }).done(function(response){
-      console.log(typeof response);
-    foodResults.push([userSearch, response]); //Store the wine results and the search that generated it in an array
+      foodResults.push([userSearch, response]); //Store the wine results and the search that generated it in an array
       if(foodResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         foodResults.shift()
       }
