@@ -22,7 +22,8 @@
     color: white;
 }
 
-.buttons {
+.buttons,
+#search-history {
     text-align: center;
     margin-bottom: 7px;
 }
@@ -40,7 +41,6 @@
     float: right;
 }
 
-
 footer {
     bottom: 0;
     padding: 10px;
@@ -57,7 +57,6 @@ footer {
 	display:;
 }
 
-
 .bg {
     background-image: url(../images/pexels-photo-160123.jpeg);
     background-size: cover;
@@ -66,9 +65,6 @@ footer {
     background-position: center center;
 }
 
-#search-history{
-    text-align: center;
-}
 
 .history-button{
     margin-right: 3px;

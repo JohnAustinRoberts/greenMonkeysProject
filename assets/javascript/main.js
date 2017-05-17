@@ -5,6 +5,7 @@ $(document).ready(function(){
     food: "",
     wine: ""
   };
+  var buttonTrigger = false;
   var userSearch = "";
   var searchType = "food"; //may change to wine based on user selection
   var stateID = "NJ"; //default NJ for testing
@@ -57,8 +58,8 @@ $(document).ready(function(){
   $("#submit").on("click", function(event){
     //Grab the user inputs
     event.preventDefault();
+    buttonTrigger = false; //Tracks how the search was triggered (history button or search submit)
     userSearch = $("#foodtext").val().trim().toLowerCase();
-
     searchType = $(".active").attr("id").slice(0,4);
 
     //need grab rest of inputs here like state and 
@@ -73,9 +74,15 @@ $(document).ready(function(){
       console.log(validation[1]) //put this in a modal?
       return;
     }
-
+    //Send the user input to search function
+    performSearch(userSearch, searchType, null);
+  });
+  
+  //Function determines the type of search and makes function calls
+  //that will query the APIs and extract the results
+  function performSearch(srch, srchType, btnIndex){
     //Make the inputs into the URL and call the API
-    if(searchType === "wine"){
+    if(srchType === "wine"){
       /*//Reset results holders
       currentFoodResults = [[],[],[],[],[]];
       currentWineResults = [[],[],[],[],[],[],[]];
@@ -93,16 +100,22 @@ $(document).ready(function(){
       currentFoodResults = [[],[],[],[],[]];
       currentWineResults = [[],[],[],[],[],[],[]];
 
-      //Create the formatted urls
-      foodUrl = makeSearchIntoFoodURL(userSearch);
-      wineUrl = makeSearchIntoWineURL(matchFoodToWine(userSearch));
-   
-      //API call the recipes based on user inputs
-      getFoods(foodUrl, extractFoodResults);
-      getWines(wineUrl, extractWineResults);
+      if(buttonTrigger === false){
+        //Create the formatted urls
+        foodUrl = makeSearchIntoFoodURL(userSearch);
+        wineUrl = makeSearchIntoWineURL(matchFoodToWine(userSearch));
+     
+        //API call the recipes based on user inputs
+        getFoods(foodUrl, extractFoodResults);
+        getWines(wineUrl, extractWineResults);
 
+      } else if(buttonTrigger === true) {//Skip the API call and reference the cached result
+
+        extractFoodResults(foodResults[btnIndex][1]);
+        extractWineResults(wineResults[btnIndex][1]);
+      }
     }
-  });
+  }
 
   //Allow the user to push "enter" on the input
   $(".form-control").on("keypress", function(event){
@@ -168,11 +181,12 @@ $(document).ready(function(){
       url: wUrl,
       dataType: "jsonp"
     }).done(function(response){
-      wineResults.push([userSearch, response]);//Store the wine results and the search that generated it in an array
+      wineResults.push([userSearch, response, searchType]);//Store the wine results and the search that generated it in an array
       if(wineResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         wineResults.shift()
       }
-      localStorage.setItem("wHistory", JSON.stringify(wineResults)); //Put local history in storage for later use
+
+      localStorage.setItem("wHistory", JSON.stringify(wineResults)); //Put local history in storage for later use  
 
       if(typeof callback === "function"){
         callback(wineResults[wineResults.length - 1][1]);
@@ -190,12 +204,13 @@ $(document).ready(function(){
       dataType: "json"
       // jsonpCallback: 'callback'
     }).done(function(response){
-      foodResults.push([userSearch, response]); //Store the wine results and the search that generated it in an array
+      foodResults.push([userSearch, response, searchType]); //Store the wine results and the search that generated it in an array
       if(foodResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         foodResults.shift()
       }
+      
       localStorage.setItem("fHistory", JSON.stringify(foodResults));//Put the history in local storage for later use
-
+      
       if(typeof callback === "function"){
         callback(foodResults[foodResults.length -1][1]);
       }
@@ -233,7 +248,6 @@ $(document).ready(function(){
     if (items.length > 1){
       items = pickRandom(items); //returns two items from the array to search
     }
-
     return items;
   }
 
@@ -360,6 +374,12 @@ $(document).ready(function(){
           "</div>"
         );
       }
+
+      //If the search was run from a search submit then add a 
+      //history button, otherwise skip adding the history button
+      if(buttonTrigger === false){
+        addHistoryButtons();
+      }
     }
   }
 
@@ -370,19 +390,36 @@ $(document).ready(function(){
       //restores prior results from last session
       foodResults = JSON.parse(localStorage.fHistory);
       wineResults = JSON.parse(localStorage.wHistory);
-      console.log(foodResults)
-      //clear anything that might be in search history
-      $("#search-history").empty();
-
-      //Add buttons with prior search terms
-      for(var i = 0 ; i < foodResults.length ; i++){
-        
-        $("#search-history").append(  
-          "<button class='btn history-button' id='" + foodResults[i][0] + "'>" + foodResults[i][0] + "</button>"
-        );
-      }
+    
+      //Add history buttons
+      addHistoryButtons();
     }
   }
+
+  function addHistoryButtons(){
+    $("#search-history").empty();
+
+    //Add buttons with prior search terms
+    for(var i = 0 ; i < foodResults.length ; i++){
+      $("#search-history").append(  
+        "<button class='btn history-button' id='" + foodResults[i][0] + "--" + i + "'>" + foodResults[i][0] + "</button>"
+      );
+    }
+    //Re/attach listeners
+    addHistoryButtonListener();
+  }
+
+  //Removes and reattaches listeners to the history button clicks
+  function addHistoryButtonListener(){
+    $(".history-button").off();
+    $(".history-button").on("click", function(event){
+        //var srch = event.target.id.slice(0, event.target.id.length - 3);
+        var sIndex = event.target.id.slice(event.target.id.length - 1);
+        buttonTrigger = true;
+        performSearch(null, foodResults[sIndex][2], sIndex);
+    })
+  }
+  //localStorage.clear();
   pageInit();
 });
 
