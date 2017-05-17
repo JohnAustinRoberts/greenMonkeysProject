@@ -190,10 +190,15 @@ $(document).ready(function(){
       // jsonpCallback: 'callback'
     }).done(function(response){
 <<<<<<< HEAD
+<<<<<<< HEAD
       console.log(typeof response);
 =======
 >>>>>>> a4820ebc457e439eb18f32b95428db3d227a56cf
       foodResults.push([userSearch, response]); //Store the wine results and the search that generated it in an array
+=======
+      console.log(typeof response);
+    foodResults.push([userSearch, response]); //Store the wine results and the search that generated it in an array
+>>>>>>> 5a351c5edb03364a0c150a269620b606891b634c
       if(foodResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         foodResults.shift()
       }
