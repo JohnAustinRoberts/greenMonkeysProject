@@ -156,7 +156,7 @@ $(document).ready(function(){
   //terms are expected to be passed in space delimited format
   function makeSearchIntoFoodURL(userSearch){
     var srch = userSearch.replace(/\s/g, "%20");
-    return "http://food2fork.com/api/search?key=" + apiKeys.food + 
+    return "https://crossorigin.me/http://food2fork.com/api/search?key=" + apiKeys.food + 
       "&q=" + srch;
   }
 
