@@ -15,8 +15,8 @@
         </div>
         <div class="navigation">
             <ul class="nav nav-tabs nav-justified">
-                <li class ="active" id="foodtab"><a href="#">With Food</a></li>
-       			<li id="winetab"><a href="#">With Wine</a></li>
+                <li class="active" id="foodtab"><a href="#">With Food</a></li>
+                <li id="winetab"><a href="#">With Wine</a></li>
             </ul>
         </div>
         <br>
@@ -32,76 +32,36 @@
         </div>
     </div>
     <br>
-    <br>
+    <div class="buttons">
+        <div class="btn-group">
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                $$$$ <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Separated link</a></li>
+            </ul>
+        </div>
+    </div>
     <div id="results">
-    <table class="table table-bordered">
-            <tr class="success">
-                <th></th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="success">
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr class="success">
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr class="success">
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-            </tr>
-        </tbody>
-    </table>
     </div>
-    <div id="buttons">
-        <div class="btn-group">
-            <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                State
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-        </div>
-        <div class="btn-group">
-            <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                $$$$
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-        </div>
-    </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <Footer>@Copyright 2017 Green Monkeys Project</Footer>
    
-   <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
-   <script type="text/javascript" src="./assets/javascript/constant.js"></script>
-   <script type="text/javascript" src="./assets/javascript/main.js"></script>
+    <Footer>@Copyright 2017 Green Monkeys Project
+        <div id="foodToForkPic">
+            <img alt="Food2Fork" src="assets/images/food2fork-logo.png">
+        </div>
+        <div id="winePic">
+			<img alt="wine" src="assets/images/winecom.jpeg">
+        </div>
+        </div>
+    </Footer>
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./assets/javascript/constant.js"></script>
+    <script type="text/javascript" src="./assets/javascript/main.js"></script>
 </body>
 
 </html>
