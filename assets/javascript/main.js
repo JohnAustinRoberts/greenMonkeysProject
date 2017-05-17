@@ -76,7 +76,7 @@ $(document).ready(function(){
 
     //Make the inputs into the URL and call the API
     if(searchType === "wine"){
-      //Reset results holders
+      /*//Reset results holders
       currentFoodResults = [[],[],[],[],[]];
       currentWineResults = [[],[],[],[],[],[],[]];
 
@@ -86,7 +86,7 @@ $(document).ready(function(){
 
       //API call the recipes based on user inputs
       getWines(wineUrl, extractWineResults(renderResults));
-      getFoods(foodUrl, extractFoodResults(renderResults));
+      getFoods(foodUrl, extractFoodResults(renderResults));*/
 
     } else { //If not a wine search always default to a primary food search
       //Reset results holders
@@ -189,7 +189,6 @@ $(document).ready(function(){
       dataType: "json"
       // jsonpCallback: 'callback'
     }).done(function(response){
-
       foodResults.push([userSearch, response]); //Store the wine results and the search that generated it in an array
       if(foodResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         foodResults.shift()
@@ -305,31 +304,59 @@ $(document).ready(function(){
       currentFoodResults[4].push(obj.recipes[i].source_url);
     } 
     console.log(currentFoodResults)
-    return currentFoodResults;
+    renderResults();
   }
 
   //Take the results out of the wine query and store them in an array - return the array
   function extractWineResults(obj){
     //Extract the predefined number of results from the object
+    var imgUrl
     for(var i = 0 ; i < numResults ; i++){
       currentWineResults[0].push(obj.Products.List[i].Ratings.HighestScore);
       currentWineResults[1].push(obj.Products.List[i].Name);
       currentWineResults[2].push(obj.Products.List[i].Labels[0].Url);
       currentWineResults[3].push(obj.Products.List[i].Vineyard.Name);
-      currentWineResults[4].push(obj.Products.List[i].Vintage);
+      currentWineResults[4].push(obj.Products.List[i].Url);
       currentWineResults[5].push(obj.Products.List[i].Retail.Price);
       currentWineResults[6].push(obj.Products.List[i].Varietal.Name);
+
+      //Extract the larger image url from the result
+      imgUrl = currentWineResults[2][i];
+      currentWineResults[2][i] = imgUrl.slice(0, imgUrl.length -5) + "l" + imgUrl.slice(imgUrl.length -4);
     }
     console.log(currentWineResults)
-    return currentWineResults;
+    renderResults();
   }
 
   //return the results to the page 
-  function renderResults(disp){
+  function renderResults(){
+    var foodTest = currentFoodResults.join("");
+    var wineTest = currentWineResults.join("");
+
     //append things to DOM
-    if(disp.length === 2){//Only run if both wine and food results are available
-      $("#results-area").empty();
-      $("#results-area").append(disp);
+    if(foodTest !== "" && wineTest !== ""){//Only run if both wine and food results are available
+      $("#results").empty();
+
+      for(var i = 0 ; i < numResults ; i++){
+        $("#results").append(
+          "<div class='result-block'>" + 
+            "<div class='food-block'>" +
+              "<p>" + currentFoodResults[1][i] + "</p>" + 
+              "<a href='" + currentFoodResults[4][i] + "'>" +
+                "<img alt='recipe" + i + "' src='" + currentFoodResults[2][i] + "'/>" +
+              "</a>" +
+              "<p> <span>" + currentFoodResults[3][i] + " " + "</span><span>" + Math.floor(Number(currentFoodResults[0][i]))+ "</span></p>" + 
+            "</div>" +
+            "<div class='wine-block'>" +
+              "<p>" + currentWineResults[1][i] + "</p>" + 
+              "<a href='" + currentWineResults[4][i] + "'>" +
+                "<img alt='wine" + i + "' src='" + currentWineResults[2][i] + "'/>" +
+              "</a>" +
+              "<p> <span>" + currentWineResults[0][i] + " " + "</span><span>"+currentWineResults[6][i]+ " " + "</span><span>" + currentWineResults[3][i]+ "</span></p>" + 
+            "</div>" +
+          "</div>"
+        );
+      }
     }
   }
 
