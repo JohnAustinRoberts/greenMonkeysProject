@@ -342,18 +342,18 @@ $(document).ready(function(){
         $("#results").append(
           "<div class='result-block'>" + 
             "<div class='food-block'>" +
-              "<p>" + currentFoodResults[1][i] + "</p>" + 
+              "<p class='food-title'>" + currentFoodResults[1][i] + "</p>" + 
               "<a href='" + currentFoodResults[4][i] + "'>" +
                 "<img alt='recipe" + i + "' src='" + currentFoodResults[2][i] + "'/>" +
               "</a>" +
-              "<p> <span>" + currentFoodResults[3][i] + " " + "</span><span>" + Math.floor(Number(currentFoodResults[0][i]))+ "</span></p>" + 
+              "<p class='food-details'> <span>" + currentFoodResults[3][i] + " " + "</span><span>" + Math.floor(Number(currentFoodResults[0][i]))+ "</span></p>" + 
             "</div>" +
             "<div class='wine-block'>" +
-              "<p>" + currentWineResults[1][i] + "</p>" + 
+              "<p class='wine-title'>" + currentWineResults[1][i] + "</p>" + 
               "<a href='" + currentWineResults[4][i] + "'>" +
                 "<img alt='wine" + i + "' src='" + currentWineResults[2][i] + "'/>" +
               "</a>" +
-              "<p> <span>" + currentWineResults[0][i] + " " + "</span><span>"+currentWineResults[6][i]+ " " + "</span><span>" + currentWineResults[3][i]+ "</span></p>" + 
+              "<p class='wine-details'> <span>" + currentWineResults[0][i] + " " + "</span><span>"+currentWineResults[6][i]+ " " + "</span><span>" + currentWineResults[3][i]+ "</span></p>" + 
             "</div>" +
           "</div>"
         );
