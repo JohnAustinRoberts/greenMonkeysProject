@@ -57,6 +57,7 @@ footer {
 	display:;
 }
 
+
 .bg {
     background-image: url(../images/pexels-photo-160123.jpeg);
     background-size: cover;
@@ -65,7 +66,21 @@ footer {
     background-position: center center;
 }
 
+.food-block {
+    display: inline-block;
+    height: 100px;
+}
+
+.wine-block{
+    display: inline-block;
+    height: auto;
+    float: right;
+    margin-left: 5px;
+    top-margin: 50px;
+}
+
 .history-button{
     margin-right: 3px;
     margin-left: 3px;
 }
+
