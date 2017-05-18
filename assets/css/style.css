@@ -60,14 +60,6 @@ footer {
 	display:;
 }
 
-/*.subfooter {
-	float: bottom;
-	background-color: #DCDCDC;
-	width: 100%;
-	text-align: center;
-}
-
-*/
 
 .bg {
     background-image: url(../images/pexels-photo-160123.jpeg);
@@ -76,3 +68,21 @@ footer {
     background-attachment: fixed;
     background-position: center center;
 }
+
+.food-block {
+    display: inline-block;
+    height: 100px;
+ 
+
+
+}
+.wine-block{
+    display: inline-block;
+    height: auto;
+    float: right;
+    margin-left: 5px;
+    top-margin: 50px;
+
+}
+
+
