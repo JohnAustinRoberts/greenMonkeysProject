@@ -23,9 +23,10 @@
     color: white;
 }
 
-.buttons {
+.buttons,
+#search-history {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 7px;
 }
 
 .btn-primary {
@@ -49,12 +50,7 @@
     float: right;
 }
 
-
 footer {
-
-    margin: 10px;
-    padding: 20px;
-    position: fixed;
     bottom: 0;
     padding: 10px;
     width: 100%;
@@ -62,8 +58,8 @@ footer {
     font-family: 'Cedarville Cursive', cursive;
     font-family: 'Tangerine', cursive;
     font-size: 40px;
-    background-color: #eee;
-    
+    color: white;   
+    text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
 }
 
 
@@ -79,4 +75,10 @@ footer {
     background-position: center center;
 }
 
+
+
+.history-button{
+    margin-right: 3px;
+    margin-left: 3px;
+}
 
