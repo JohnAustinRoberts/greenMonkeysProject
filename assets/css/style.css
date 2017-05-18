@@ -18,6 +18,7 @@
     filter: alpha(opacity=30);
 }
 
+
 #searchLabel {
     color: white;
 }
@@ -31,6 +32,7 @@
 .btn-primary {
     width: 100%;
 }
+
 
 #foodToForkPic {
     float: left;
@@ -53,6 +55,7 @@ footer {
     text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
 }
 
+
 .panel-body {
 	display:;
 }
@@ -66,17 +69,20 @@ footer {
     background-position: center center;
 }
 
-.food-block {
-    display: inline-block;
-    height: 100px;
+
+.foodResultImage {
+    max-width: 75%;
+
 }
 
-.wine-block{
-    display: inline-block;
-    height: auto;
-    float: right;
-    margin-left: 5px;
-    top-margin: 50px;
+
+.result-block {
+    text-align: center;
+    border-top: solid 1px grey;
+    border-bottom: solid 1px grey;
+    margin: 1% 15% 1% 15%;
+    background-color: rgba(255,255,255,.9);
+
 }
 
 .history-button{
@@ -84,3 +90,19 @@ footer {
     margin-left: 3px;
 }
 
+
+.food-title {
+    font-weight: bolder;
+}
+
+.food-details {
+    font-style: italic;
+}
+
+.wine-title {
+    font-weight: bolder;
+}
+
+.wine-detials {
+    font-style: italic;
+}
