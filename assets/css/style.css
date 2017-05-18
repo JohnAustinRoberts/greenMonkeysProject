@@ -66,25 +66,18 @@ footer {
     background-position: center center;
 }
 
-
 .food-block {
     display: inline-block;
     height: 100px;
- 
-
-
 }
+
 .wine-block{
     display: inline-block;
     height: auto;
     float: right;
     margin-left: 5px;
     top-margin: 50px;
-
 }
-
-
-
 
 .history-button{
     margin-right: 3px;
