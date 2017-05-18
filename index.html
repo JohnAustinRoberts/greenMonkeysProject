@@ -9,57 +9,65 @@
 </head>
 
 <body class="bg">
-    <div class="container">
-        <div class="jumbotron" id="tagLine">
-            <h1 class="text-center" id="titleLine">Pair A Cork With It</h1>
-        </div>
-        <div class="navigation">
-            <ul class="nav nav-tabs nav-justified">
-                <li class="active" id="foodtab"><a href="#">With Food</a></li>
-                <li id="winetab"><a href="#">With Wine</a></li>
-            </ul>
-        </div>
-        <br>
-        <br>
-        <div class="panel-body">
-            <form>
-                <div class="form-group">
+  <div class="container">
+    <div class="jumbotron" id="tagLine">
+      <h1 class="text-center" id="titleLine">Pair A Cork With It</h1>
+    </div>
+    <div class="navigation">
+      <ul class="nav nav-tabs nav-justified">
+        <li class="active" id="foodtab"><a href="#">With Food</a></li>
+        <li id="winetab"><a href="#">With Wine</a></li>
+      </ul>
+    </div>
 
-                    <label for="food" id="searchLabel">What's on the menu?</label>
-                    <input class="form-control" id="foodtext" type="text" placeholder="ex. chicken, tacos, etc">
-                </div>
-                <button class="btn btn-primary" id="submit" type="submit">Submit</button>
-            </form>
+    <div class="panel-body">
+      <form>
+        <div class="form-group">
+          <label for="food" id="searchLabel">What's on the menu?</label>
+          <input class="form-control" id="foodtext" type="text" placeholder="ex. chicken, tacos, etc">
         </div>
+        <button class="btn btn-primary" id="submit" type="submit">Submit</button>
+      </form>
     </div>
-    <br>
+
     <div class="buttons">
-        <div class="btn-group">
-            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                $$$$ <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-            </ul>
-        </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        $$$$ <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="#">$</a></li>
+          <li><a href="#">$$</a></li>
+          <li><a href="#">$$$</a></li>
+          <li><a href="#">$$$$</a></li>
+        </ul>
+      </div>
     </div>
-    <div id="results">
+
+    <div class="row" id="search-history">
     </div>
-   
-    <Footer>@Copyright 2017 Green Monkeys Project
-        <div id="footerPics">
-            <img id="food" alt="Food2Fork" src="assets/images/food2fork-logo.png">
-			<img id="wine" alt="winecom" src="assets/images/winecom.jpeg">
-        </div>
+
+    <div class="row" id="results">
+    </div>
+
+    <Footer> &copy; 2017 Green Monkeys
+      <div id="foodToForkPic">
+        <a href="http://food2fork.com/" target="_blank">
+          <img alt="Food2Fork" src="assets/images/food2fork-logo.png">
+        </a>
+      </div>
+      <div id="winePic">
+        <a href="https://www.wine.com/" target="_blank">
+          <img alt="wine" src="assets/images/winecom.jpeg">
+        </a>
+      </div>
     </Footer>
-    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="./assets/javascript/constant.js"></script>
-    <script type="text/javascript" src="./assets/javascript/main.js"></script>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="./assets/javascript/constant.js"></script>
+  <script type="text/javascript" src="./assets/javascript/main.js"></script>
 </body>
 
 </html>
