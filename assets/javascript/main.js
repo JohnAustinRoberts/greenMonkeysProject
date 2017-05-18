@@ -356,15 +356,15 @@ $(document).ready(function(){
 
       for(var i = 0 ; i < numResults ; i++){
         $("#results").append(
-          "<div class='result-block'>" + 
-            "<div class='food-block'>" +
+          "<div class='result-block row'>" + 
+            "<div class='food-block col-xs-6 col-xl-6 col-l-6'>" +
               "<p class='food-title'>" + currentFoodResults[1][i] + "</p>" + 
               "<a href='" + currentFoodResults[4][i] + "'>" +
-                "<img alt='recipe" + i + "' src='" + currentFoodResults[2][i] + "'/>" +
+                "<img alt='recipe" + i + "' class='foodResultImage' src='" + currentFoodResults[2][i] + "'/>" +
               "</a>" +
               "<p class='food-details'> <span>" + currentFoodResults[3][i] + " " + "</span><span>" + Math.floor(Number(currentFoodResults[0][i]))+ "</span></p>" + 
             "</div>" +
-            "<div class='wine-block'>" +
+            "<div class='wine-block col-xs-6 col-xl-6 col-l-6'>" +
               "<p class='wine-title'>" + currentWineResults[1][i] + "</p>" + 
               "<a href='" + currentWineResults[4][i] + "'>" +
                 "<img alt='wine" + i + "' src='" + currentWineResults[2][i] + "'/>" +
