@@ -76,10 +76,16 @@ footer {
     background-position: center center;
 }
 
+.foodResultsImage {
+    max-width: 200px;
+
+}
+
 
 .food-block {
     display: inline-block;
     height: 100px;
+
 }
 
 .wine-block{
