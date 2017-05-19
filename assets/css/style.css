@@ -10,15 +10,13 @@
     background: rgba(66, 139, 202, 1);
 }
 
-#withFood {
+#withFood,
+#withWine,
+#searchLabel {
     color: white;
     text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
 }
 
-#withWine {
-    color: white;
-    text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
-}
 #titleLine {
     opacity: 1.0;
     filter: alpha(opacity=100);
@@ -31,10 +29,6 @@
     filter: alpha(opacity=30);
 }
 
-
-#searchLabel {
-    color: white;
-}
 
 .buttons,
 #search-history {
@@ -89,13 +83,15 @@ footer {
 
 
 .result-block {
+    padding-top: 1%;
+    padding-bottom: 1%;
     text-align: center;
     border-top: solid 1px grey;
     border-bottom: solid 1px grey;
 }
 
 #blurb {
-    /*padding: 1%;*/
+    padding: 1%;
     border: 1px solid gray;
 }
 
@@ -219,4 +215,14 @@ footer {
   69.36% { -webkit-transform: matrix3d(0.999, 0, 0, 0, 0, 1.001, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transform: matrix3d(0.999, 0, 0, 0, 0, 1.001, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   83.61% { -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); }
   100% { -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); } 
+}
+
+.rImg{
+    border: 1px solid gold;
+    padding: 2px;
+}
+
+.rImg:hover{
+    border: 3px solid gold;
+    padding: 0px;
 }

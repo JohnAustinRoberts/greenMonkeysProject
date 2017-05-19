@@ -6,6 +6,8 @@
     wine: "9423d2c8326f4d2c768425852bce8030"
   };
   var buttonTrigger = false;
+  var foodRunFlag = false;
+  var wineRunFlag = false;
   var userSearch = "";
   var searchType = "food"; //may change to wine based on user selection
   var stateID = "NJ"; //default NJ for testing
@@ -14,6 +16,7 @@
   var varietalInformation = null;
   var priceChoice = 4;
   var numResults = 5;
+  var maxResults = 0;
   var priceRange = ["0.00|15.00","15.01|30.00","30.01|50.00","50.01|1000.00", "00.00|10000.00" ];
   var foodResults = [];
   var wineResults = [];
@@ -33,6 +36,8 @@
   $(".nav-tabs").on("click", function(event){
     var clicked = event.target.parentNode.id;//Determine the clicked tab
     var active = $(".active").attr("id");//Determine the active tab
+    event.preventDefault(); //prevent page from refresh
+
     if (clicked !== active){ //If the user didn't select the active tab then switch tabs
       $("#" + active).toggleClass("active");
       $("#" + clicked).toggleClass("active");
@@ -77,10 +82,13 @@
   //that will query the APIs and extract the results
   function performSearch(srch, srchType, btnIndex){
     //Make the inputs into the URL and call the API
-    //Reset results holders
+    //Reset variables
     currentFoodResults = [[],[],[],[],[]];
     currentWineResults = [[],[],[],[],[],[],[]];
     varietalInformation = null;
+    foodRunFlag = false;
+    wineRunFlag = false;
+    numResults = 5;
 
     if(buttonTrigger === false){//Make API call if new search
 
@@ -293,7 +301,10 @@
   //Take the results out of the food query and store them in an array - return the array
   function extractFoodResults(obj, btnIndex){
     //Extract the predefined number of results from the object
-    for(var i = 0 ; i < numResults ; i++){
+    var maxAmt;
+    maxAmt = obj.recipes.length;
+
+    for(var i = 0 ; i < maxAmt ; i++){
       currentFoodResults[0].push(obj.recipes[i].social_rank);
       currentFoodResults[1].push(obj.recipes[i].title);
       currentFoodResults[2].push(obj.recipes[i].image_url);
@@ -301,14 +312,17 @@
       currentFoodResults[4].push(obj.recipes[i].source_url);
     } 
     console.log(currentFoodResults)
+    foodRunFlag = true;
     renderResults(btnIndex);
   }
 
   //Take the results out of the wine query and store them in an array - return the array
   function extractWineResults(obj, btnIndex){
     //Extract the predefined number of results from the object
-    var imgUrl
-    for(var i = 0 ; i < numResults ; i++){
+    var imgUrl, maxAmt;
+    maxAmt = obj.Products.List.length;
+
+    for(var i = 0 ; i < maxAmt ; i++){
       currentWineResults[0].push(obj.Products.List[i].Ratings.HighestScore);
       currentWineResults[1].push(obj.Products.List[i].Name);
       currentWineResults[2].push(obj.Products.List[i].Labels[0].Url);
@@ -325,43 +339,23 @@
     varietalInformation = extractVarietalInfo(currentWineResults[6][0]);
     varietalInformation = extractVarietalInfo(wineResults[wineResults.length -1][3]);
     console.log(currentWineResults);
+    wineRunFlag = true;
     renderResults(btnIndex);
   }
 
   //return the results to the page 
   function renderResults(btnIndex){
-    var foodTest = currentFoodResults.join("");
-    var wineTest = currentWineResults.join("");
-
     //append things to DOM
-    if(foodTest !== "" && wineTest !== ""){//Only run if both wine and food results are available
+    if(foodRunFlag === true && wineRunFlag === true){//Only run if both wine and food results are available
       $("#results").empty();
       $("#blurb").empty();
+      $("#blurb").removeClass("done");
 
       if(varietalInformation !== null && varietalInformation !== undefined){
         $("#blurb").html("<p>About this wine: </p> <p>" +  varietalInformation + "</p>"); //Add the blurb for the varietal
       }
 
-      for(var i = 0 ; i < numResults ; i++){
-        $("#results").append(
-          "<div class='result-block row'>" + 
-            "<div class='food-block col-xs-6 col-xl-6 col-l-6'>" +
-              "<p class='food-title'>" + currentFoodResults[1][i] + "</p>" + 
-              "<a href='" + currentFoodResults[4][i] + "'>" +
-                "<img alt='recipe" + i + "' class='foodResultImage' src='" + currentFoodResults[2][i] + "'/>" +
-              "</a>" +
-              "<p class='food-details'> <span>" + currentFoodResults[3][i] + " " + "</span><span>" + Math.floor(Number(currentFoodResults[0][i]))+ "</span></p>" + 
-            "</div>" +
-            "<div class='wine-block col-xs-6 col-xl-6 col-l-6'>" +
-              "<p class='wine-title'>" + currentWineResults[1][i] + "</p>" + 
-              "<a href='" + currentWineResults[4][i] + "'>" +
-                "<img alt='wine" + i + "' src='" + currentWineResults[2][i] + "'/>" +
-              "</a>" +
-              "<p class='wine-details'> <span>" + currentWineResults[0][i] + " " + "</span><span>"+currentWineResults[6][i]+ " " + "</span><span>" + currentWineResults[3][i]+ "</span></p>" + 
-            "</div>" +
-          "</div>"
-        );
-      }
+      numResults = checkForValidResults(currentFoodResults[1], currentWineResults[1]); //return number of results available for display
 
       //If the search was run from a search submit then add a 
       //history button, otherwise skip adding the history button
@@ -370,10 +364,37 @@
         $("#wait").toggle("done");
         wineResults[wineResults.length - 1][3] = varietalInformation;
       } else {
-          varietalInformation = wineResults[btnIndex][3];
+        varietalInformation = wineResults[btnIndex][3];
         if(varietalInformation !== null && varietalInformation !== undefined){
           $("#blurb").html("<p>About this wine: </p> <p>" +  varietalInformation + "</p>");
         }
+      }
+
+      //Bail if there aren't any results to display
+      if (numResults === null){
+        $("#blurb").html("<p>Sorry, we couldn't find anything based on your search.</p>");
+        return;
+      } 
+
+      for(var i = 0 ; i < numResults ; i++){
+        $("#results").append(
+          "<div class='result-block row'>" + 
+            "<div class='food-block col-xs-6 col-xl-6 col-l-6'>" +
+              "<p class='food-title'>" + currentFoodResults[1][i] + "</p>" + 
+              "<a href='" + currentFoodResults[4][i] + "'>" +
+                "<img alt='recipe" + i + "' class='foodResultImage rImg' src='" + currentFoodResults[2][i] + "'/>" +
+                "<p class='food-details'> <span>Credit: " + currentFoodResults[3][i] + " " + ", </span><span>" + Math.floor(Number(currentFoodResults[0][i]))+ " Pts</span></p>" + 
+              "</a>" +
+            "</div>" +
+            "<div class='wine-block col-xs-6 col-xl-6 col-l-6'>" +
+              "<p class='wine-title'>" + currentWineResults[1][i] + "</p>" + 
+              "<a href='" + currentWineResults[4][i] + "'>" +
+                "<img alt='wine" + i + "' src='" + currentWineResults[2][i] + "' class='wineResultImage rImg'/>" +
+                "<p class='wine-details'> <span>" + currentWineResults[0][i] + " " + "Pts </span><span>"+currentWineResults[6][i]+ " " + ", </span><span>" + currentWineResults[3][i]+ "</span></p>" + 
+              "</a>" +
+            "</div>" +
+          "</div>"
+        );
       }
     }
   }
@@ -381,7 +402,7 @@
   //function runs on page load and populates the history of searches
   function pageInit(){
     var nullTest = localStorage.fHistory;
-    if(nullTest !== null){ //Only run if there is info in localStorage
+    if(nullTest !== undefined){ //Only run if there is info in localStorage
       //restores prior results from last session
       foodResults = JSON.parse(localStorage.fHistory);
       wineResults = JSON.parse(localStorage.wHistory);
@@ -430,7 +451,30 @@
       return varietalInformation;
     }
   }
-  //localStorage.clear();
+
+  //This function checks the current results to make sure there is data to display and
+  //returns the amount of results to send to render engine
+  function checkForValidResults(foodR, wineR){
+    var fLen = foodR[0];
+    var wLen = wineR[0];
+    var returnLen;
+
+    if(fLen !== undefined && wLen !== undefined){
+      returnLen = Math.min(foodR.length, wineR.length);
+    } else {
+      return null;
+    }
+
+    if(returnLen === 0){ //If there are no search results in one of the queries
+      return null;
+    } else if(returnLen < numResults){ //If search results are less than the default display amount
+      return returnLen;
+    } else { //Otherwise return the default
+      return numResults; 
+    }  
+  }
+
+  localStorage.clear();
   pageInit();
 //});
 
