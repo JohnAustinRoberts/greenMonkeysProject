@@ -324,7 +324,6 @@
 
     varietalInformation = extractVarietalInfo(currentWineResults[6][0]);
     varietalInformation = extractVarietalInfo(wineResults[wineResults.length -1][3]);
-    wineResults[wineResults.length -1].push(varietalInformation);
     console.log(currentWineResults);
     renderResults();
   }
@@ -426,7 +425,7 @@
       return varietalInformation;
     }
   }
-  localStorage.clear();
+  //localStorage.clear();
   pageInit();
 //});
 

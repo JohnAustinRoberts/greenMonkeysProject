@@ -5,7 +5,20 @@
     font-family: 'Tangerine', cursive;
     text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
 }
+.nav {
+    background: rgb(66, 139, 202);
+    background: rgba(66, 139, 202, 1);
+}
 
+#withFood {
+    color: white;
+    text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+}
+
+#withWine {
+    color: white;
+    text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+}
 #titleLine {
     opacity: 1.0;
     filter: alpha(opacity=100);
