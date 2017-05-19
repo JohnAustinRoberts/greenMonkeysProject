@@ -370,7 +370,10 @@
         $("#wait").toggle("done");
         wineResults[wineResults.length - 1][3] = varietalInformation;
       } else {
-        $("#blurb").html("<p>About this wine: </p> <p>" +  wineResults[btnIndex][3] + "</p>");
+          varietalInformation = wineResults[btnIndex][3];
+        if(varietalInformation !== null && varietalInformation !== undefined){
+          $("#blurb").html("<p>About this wine: </p> <p>" +  varietalInformation + "</p>");
+        }
       }
     }
   }
