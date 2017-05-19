@@ -1,9 +1,9 @@
 
-$(document).ready(function(){
+//$(document).ready(function(){
 
   var apiKeys = {
-    food: "",
-    wine: ""
+    food: "5433aef115947ae3ef295189e11fba7f",
+    wine: "9423d2c8326f4d2c768425852bce8030"
   };
   var buttonTrigger = false;
   var userSearch = "";
@@ -11,6 +11,7 @@ $(document).ready(function(){
   var stateID = "NJ"; //default NJ for testing
   var foodUrl = "";
   var wineUrl = "";
+  var varietalInformation = null;
   var priceChoice = 4;
   var numResults = 5;
   var priceRange = ["0.00|15.00","15.01|30.00","30.01|50.00","50.01|1000.00", "00.00|10000.00" ];
@@ -28,24 +29,6 @@ $(document).ready(function(){
     "-"
   ];
 
-  //Load in the API Keys
- /*function loadAPIKeys(){
-    $.ajax({
-      method: "GET",
-      url: "../config.json",
-      dataType: "json"
-    }).done(function(response){
-        apiKeys.food = response.foodKey;
-        apiKeys.wine = response.wineKey;
-    }).fail(function(err){
-      console.log("failed:" + JSON.stringify(err));
-    });
-  };*/
-
-  apiKeys.food = "5433aef115947ae3ef295189e11fba7f";
-  apiKeys.wine = "9423d2c8326f4d2c768425852bce8030";
-  //loadAPIKeys();
-
   //Toggle between wine and food search
   $(".nav-tabs").on("click", function(event){
     var clicked = event.target.parentNode.id;//Determine the clicked tab
@@ -53,6 +36,16 @@ $(document).ready(function(){
     if (clicked !== active){ //If the user didn't select the active tab then switch tabs
       $("#" + active).toggleClass("active");
       $("#" + clicked).toggleClass("active");
+    }
+
+    searchType = $(".active").attr("id").slice(0,4);
+
+    if(searchType === "wine"){
+      $("#searchLabel").html("What will you be drinking?");
+      $("#foodtext").attr("placeholder", "ex. merlot, cabernet, etc");
+    } else {
+      $("#searchLabel").html("Whats on the menu?");
+      $("#foodtext").attr("placeholder", "ex. chicken, tacos, etc");
     }
   });
 
@@ -84,38 +77,28 @@ $(document).ready(function(){
   //that will query the APIs and extract the results
   function performSearch(srch, srchType, btnIndex){
     //Make the inputs into the URL and call the API
-    if(srchType === "wine"){
-      /*//Reset results holders
-      currentFoodResults = [[],[],[],[],[]];
-      currentWineResults = [[],[],[],[],[],[],[]];
+    //Reset results holders
+    currentFoodResults = [[],[],[],[],[]];
+    currentWineResults = [[],[],[],[],[],[],[]];
+    varietalInformation = null;
 
-      //Create the formatted urls
-      wineUrl = makeSearchIntoWineURL(userSearch);
-      foodUrl = makeSearchIntoFoodURL(matchWineToFood(userSearch));
+    if(buttonTrigger === false){//Make API call if new search
 
-      //API call the recipes based on user inputs
-      getWines(wineUrl, extractWineResults(renderResults));
-      getFoods(foodUrl, extractFoodResults(renderResults));*/
-
-    } else { //If not a wine search always default to a primary food search
-      //Reset results holders
-      currentFoodResults = [[],[],[],[],[]];
-      currentWineResults = [[],[],[],[],[],[],[]];
-
-      if(buttonTrigger === false){
-        //Create the formatted urls
-        foodUrl = makeSearchIntoFoodURL(userSearch);
-        wineUrl = makeSearchIntoWineURL(matchFoodToWine(userSearch));
-     
-        //API call the recipes based on user inputs
-        getFoods(foodUrl, extractFoodResults);
-        getWines(wineUrl, extractWineResults);
-
-      } else if(buttonTrigger === true) {//Skip the API call and reference the cached result
-
-        extractFoodResults(foodResults[btnIndex][1]);
-        extractWineResults(wineResults[btnIndex][1]);
+      if(srchType === "wine"){ //If searching for a wine
+        foodUrl = makeSearchIntoFoodURL(matchFoodToWine(userSearch, varietals)); //find food that pairs for the search
+        wineUrl = makeSearchIntoWineURL(userSearch);
+        varietalInformation = varietalInfo[userSearch];
+      } else { //Otherwise
+        foodUrl = makeSearchIntoFoodURL(userSearch); //assume search was for food
+        wineUrl = makeSearchIntoWineURL(matchFoodToWine(userSearch, ingredients)); //Get a wine varietal to search
       }
+
+      getFoods(foodUrl, extractFoodResults);
+      getWines(wineUrl, extractWineResults);
+
+    } else if(buttonTrigger === true) {//Skip the API call and reference the cached result
+      extractFoodResults(foodResults[btnIndex][1], btnIndex);
+      extractWineResults(wineResults[btnIndex][1], btnIndex);
     }
   }
 
@@ -171,10 +154,9 @@ $(document).ready(function(){
   //terms are expected to be passed in space delimited format
   function makeSearchIntoFoodURL(userSearch){
     var srch = userSearch.replace(/\s/g, "%20");
-    return "https://crossorigin.me/http://food2fork.com/api/search?key=" + apiKeys.food + 
+    return "https://crossorigin.me/http://food2fork.com/api/search?key=" + apiKeys.food + //
       "&q=" + srch;
   }
-
 
   //Query the wine api for the matching wines
   function getWines(wUrl, callback){
@@ -183,7 +165,7 @@ $(document).ready(function(){
       url: wUrl,
       dataType: "jsonp"
     }).done(function(response){
-      wineResults.push([userSearch, response, searchType]);//Store the wine results and the search that generated it in an array
+      wineResults.push([userSearch, response, searchType,]);//Store the wine results and the search that generated it in an array
       if(wineResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         wineResults.shift()
       }
@@ -206,7 +188,7 @@ $(document).ready(function(){
       dataType: "json"
       // jsonpCallback: 'callback'
     }).done(function(response){
-      foodResults.push([userSearch, response, searchType]); //Store the wine results and the search that generated it in an array
+      foodResults.push([userSearch, response, searchType,]); //Store the wine results and the search that generated it in an array
       if(foodResults.length > 5){ //Only store last 5, if it gets too long then drop the oldest search
         foodResults.shift()
       }
@@ -224,22 +206,22 @@ $(document).ready(function(){
   //Takes the results of a recipe query and returns the wine search criteria
   //This is the "secret sauce" section of the code which determines the "match"
   //between the food and the wine
-  function matchFoodToWine(uSearch){
+  function matchFoodToWine(uSearch, indexer){
     var terms = uSearch.split(" ");   //break the user search into an array of words
     var items = [];                   //Holds list of all wine matches based on search terms 
     var i = terms.length - 1;         //Iterator
   
     //Goes through search terms to find if there are paired wines in our matching table
     while(i > -1){
-      if(ingredients[terms[i]]){
-        items = items.concat(ingredients[terms[i]]);
+      if(indexer[terms[i]]){
+        items = items.concat(indexer[terms[i]]);
       }
       i--;
     }
 
     //If no matches were found take the default wines
     if(items.length === 0){
-      items = items.concat(ingredients.default);
+      items = items.concat(indexer.default);
     }
     items.sort();//sort items by alpha
     items = getMode(items);//get item(s) that appear most frequently
@@ -248,8 +230,9 @@ $(document).ready(function(){
     //at random. In the future this would be more sophisticated for 
     //selection mechanism 
     if (items.length > 1){
-      items = pickRandom(items); //returns two items from the array to search
+      items = pickRandom(items); //returns an item from the array to search
     }
+    varietalInformation = extractVarietalInfo(items);
     return items;
   }
 
@@ -307,13 +290,8 @@ $(document).ready(function(){
     }
   }
 
-  //Takes the wine search query results and return the food search criteria
-  function matchWineToFood(queryResults){
-
-  }
-
   //Take the results out of the food query and store them in an array - return the array
-  function extractFoodResults(obj){
+  function extractFoodResults(obj, btnIndex){
     //Extract the predefined number of results from the object
     for(var i = 0 ; i < numResults ; i++){
       currentFoodResults[0].push(obj.recipes[i].social_rank);
@@ -323,11 +301,11 @@ $(document).ready(function(){
       currentFoodResults[4].push(obj.recipes[i].source_url);
     } 
     console.log(currentFoodResults)
-    renderResults();
+    renderResults(btnIndex);
   }
 
   //Take the results out of the wine query and store them in an array - return the array
-  function extractWineResults(obj){
+  function extractWineResults(obj, btnIndex){
     //Extract the predefined number of results from the object
     var imgUrl
     for(var i = 0 ; i < numResults ; i++){
@@ -342,20 +320,27 @@ $(document).ready(function(){
       //Extract the larger image url from the result
       imgUrl = currentWineResults[2][i];
       currentWineResults[2][i] = imgUrl.slice(0, imgUrl.length -5) + "l" + imgUrl.slice(imgUrl.length -4);
-    }
-    console.log(currentWineResults)
-    renderResults();
+    } 
+
+    varietalInformation = extractVarietalInfo(currentWineResults[6][0]);
+    varietalInformation = extractVarietalInfo(wineResults[wineResults.length -1][3]);
+    console.log(currentWineResults);
+    renderResults(btnIndex);
   }
 
   //return the results to the page 
-  function renderResults(){
+  function renderResults(btnIndex){
     var foodTest = currentFoodResults.join("");
     var wineTest = currentWineResults.join("");
 
     //append things to DOM
     if(foodTest !== "" && wineTest !== ""){//Only run if both wine and food results are available
-      $("#wait").toggle("done");
       $("#results").empty();
+      $("#blurb").empty();
+
+      if(varietalInformation !== null && varietalInformation !== undefined){
+        $("#blurb").html("<p>About this wine: </p> <p>" +  varietalInformation + "</p>"); //Add the blurb for the varietal
+      }
 
       for(var i = 0 ; i < numResults ; i++){
         $("#results").append(
@@ -382,6 +367,13 @@ $(document).ready(function(){
       //history button, otherwise skip adding the history button
       if(buttonTrigger === false){
         addHistoryButtons();
+        $("#wait").toggle("done");
+        wineResults[wineResults.length - 1][3] = varietalInformation;
+      } else {
+          varietalInformation = wineResults[btnIndex][3];
+        if(varietalInformation !== null && varietalInformation !== undefined){
+          $("#blurb").html("<p>About this wine: </p> <p>" +  varietalInformation + "</p>");
+        }
       }
     }
   }
@@ -422,7 +414,23 @@ $(document).ready(function(){
         performSearch(null, foodResults[sIndex][2], sIndex);
     })
   }
+
+  //This function extracts the description to use for the wine varietal
+  //If not match is found it returns null. Only runs if hasn't already
+  //been set
+  function extractVarietalInfo(srch){
+    if(varietalInformation === null){
+      //Extract the varietal description
+      if(varietalInfo[srch] === undefined){
+        return null;
+      } else {
+        return varietalInfo[srch][0];
+      }
+    } else {
+      return varietalInformation;
+    }
+  }
   //localStorage.clear();
   pageInit();
-});
+//});
 
