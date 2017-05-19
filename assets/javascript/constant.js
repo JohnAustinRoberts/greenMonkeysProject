@@ -21,7 +21,7 @@ var ingredients = {
 "vegetarian" : ["pinot noir", "sirah", "pinot nero"],
 "default" : ["chardonnay", "pinor noir", "merlot", "malbec", "riesling", "valpolicella"]
 };
-/*
+
 var varietals = {
   "cabernet": ["beef", "steak", "venison", "deer"],
   "pinot noir": ["beef", "steak", "duck"],
@@ -53,13 +53,13 @@ var varietals = {
   "california cabernet": ["steak", "beef", "alligator"],
   "bordeaux": ["steak", "beef", "alligator"],
   "buttery chardonnay": ["shrimp", "crab", "lobster"],
-  "rose grenache": ["crab", "shrimp", "lobster"]
+  "rose grenache": ["crab", "shrimp", "lobster"],
   "default": ["chicken", "beef", "fish", "pasta"]
 }
 
 var varietalInfo = {
   "cabernet": ["Cabernet Sauvignon is one of the world's most widely recognized red wine grape varieties. It is grown in nearly every major wine producing country among a diverse spectrum of climates from Canada's Okanagan Valley to Lebanon's Beqaa Valley. Cabernet Sauvignon became internationally recognized through its prominence in Bordeaux wines where it is often blended with Merlot and Cabernet Franc. The classic profile of Cabernet Sauvignon tends to be full-bodied wines with high tannins and noticeable acidity that contributes to the wine's aging potential. In cooler climates, Cabernet Sauvignon tends to produce wines with blackcurrant notes that can be accompanied by green bell pepper notes, mint and cedar which will all become more pronounced as the wine ages. In more moderate climates the blackcurrant notes are often seen with black cherry and black olive notes while in very hot climates the currant flavors can veer towards the over-ripe and 'jammy' side. In parts of Australia, particularly the Coonawarra wine region of South Australia, Cabernet Sauvignon wines tend to have a characteristic eucalyptus or menthol notes."],
-  "pinot noir": ["Pinot noir is a red wine grape variety of the species Vitis vinifera. The name may also refer to wines created predominantly from Pinot noir grapes. The tremendously broad range of bouquets, flavors, textures and impressions that Pinot noir can produce sometimes confuses tasters.[4] In the broadest terms, the wine tends to be of light to medium body with an aroma reminiscent of black and / or red cherry, raspberry and to a lesser extent currant and many other fine small red and black berry fruits."],
+  "pinot noir": ["Pinot noir is a red wine grape variety of the species Vitis vinifera. The name may also refer to wines created predominantly from Pinot noir grapes. The tremendously broad range of bouquets, flavors, textures and impressions that Pinot noir can produce sometimes confuses tasters. In the broadest terms, the wine tends to be of light to medium body with an aroma reminiscent of black and / or red cherry, raspberry and to a lesser extent currant and many other fine small red and black berry fruits."],
   "merlot": ["Merlot is a dark blue-colored wine grape variety, that is used as both a blending grape and for varietal wines. While Merlot is made across the globe, there tends to be two main styles. The 'International style' favored by many New World wine regions tends to emphasize late harvesting to gain physiological ripeness and produce inky, purple colored wines that are full in body with high alcohol and lush, velvety tannins with intense, plum and blackberry fruit. While this international style is practiced by many Bordeaux wine producers, the traditional 'Bordeaux style' of Merlot involves harvesting Merlot earlier to maintain acidity and producing more medium-bodied wines with moderate alcohol levels that have fresh, red fruit flavors (raspberries, strawberries) and potentially leafy, vegetal notes."],
   "chianti": ["A Chianti wine is any wine produced in the Chianti region, in central Tuscany, Italy. For a wine to retain the name of Chianti, it must be produced with at least 80% Sangiovese grapes. Chianti that meets more stringent requirements (lower yield, higher alcohol content and dry extract) may be labelled as Chianti Superiore."],
   "malbec": ["Malbec is a purple grape variety used in making red wine. The grapes tend to have an inky dark color and robust tannins, and are known as one of the six grapes allowed in the blend of red Bordeaux wine Malbec (pronounced: [mal.bɛk]) is a purple grape variety used in making red wine. The grapes tend to have an inky dark color and robust tannins, and are known as one of the six grapes allowed in the blend of red Bordeaux wine."],
@@ -89,4 +89,4 @@ var varietalInfo = {
   "bordeaux": ["A Bordeaux wine is any wine produced in the Bordeaux region of France, centred on the city of Bordeaux and covering the whole area of the Gironde department, with a total vineyard area of over 120,000 hectares, making it the largest wine growing area in France."],
   "buttery chardonnay": ["Chardonnay is a green-skinned grape variety used in the production of white wine. The Chardonnay grape itself is very neutral, with many of the flavors commonly associated with the grape being derived from such influences as terroir and oak."],
   "rose grenache": ["Grenache or Garnacha is one of the most widely planted red wine grape varieties in the world. It is generally spicy, berry-flavored and soft on the palate and produces wine with a relatively high alcohol content, but it needs careful control of yields for best results. Characteristic flavor profiles on Grenache include red fruit flavors (raspberry and strawberry) with a subtle, white pepper spice note."]
-}*/
+}

@@ -72,7 +72,6 @@ footer {
 
 .foodResultImage {
     max-width: 75%;
-
 }
 
 
@@ -80,9 +79,17 @@ footer {
     text-align: center;
     border-top: solid 1px grey;
     border-bottom: solid 1px grey;
+}
+
+#blurb {
+    /*padding: 1%;*/
+    border: 1px solid gray;
+}
+
+#blurb,
+.result-block {
     margin: 1% 15% 1% 15%;
     background-color: rgba(255,255,255,.9);
-
 }
 
 .history-button{
