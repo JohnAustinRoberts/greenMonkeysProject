@@ -61,7 +61,6 @@
     buttonTrigger = false; //Tracks how the search was triggered (history button or search submit)
     userSearch = $("#foodtext").val().trim().toLowerCase();
     searchType = $(".active").attr("id").slice(0,4);
-    $("#wait").toggle("done");
     //need grab rest of inputs here like state and 
 
     //reset the search box to blank afer a search
@@ -74,6 +73,7 @@
       console.log(validation[1]) //put this in a modal?
       return;
     }
+    $("#wait").toggle("done");
     //Send the user input to search function
     performSearch(userSearch, searchType, null);
   });
@@ -363,11 +363,12 @@
       if(buttonTrigger === false){
         addHistoryButtons();
         $("#wait").toggle("done");
-        wineResults[wineResults.length - 1][3] = varietalInformation;
+        wineResults[wineResults.length - 1][3] = varietalInformation; //Store the varietal info
+        localStorage.setItem("wHistory", JSON.stringify(wineResults));//Update Storage with the new varietal Information    
       } else {
         varietalInformation = wineResults[btnIndex][3];
         if(varietalInformation !== null && varietalInformation !== undefined){
-          $("#blurb").html("<p>About this wine: </p> <p>" +  varietalInformation + "</p>");
+          $("#blurb").html("<span id='blurbTitle'>About this wine: </span> <p>" +  varietalInformation + "</p>");
         }
       }
 
@@ -375,21 +376,23 @@
       if (numResults === null){
         $("#blurb").html("<p>Sorry, we couldn't find anything based on your search.</p>");
         return;
-      } 
+      }  else if($("#blurb").html() === ""){
+        $("#blurb").html("<span id='blurbTitle'> You may enjoy these food and wine pairs</span>");
+      }
 
       for(var i = 0 ; i < numResults ; i++){
         $("#results").append(
           "<div class='result-block row'>" + 
             "<div class='food-block col-xs-6 col-xl-6 col-l-6'>" +
               "<p class='food-title'>" + currentFoodResults[1][i] + "</p>" + 
-              "<a href='" + currentFoodResults[4][i] + "'>" +
+              "<a href='" + currentFoodResults[4][i] + "' target='_blank'>" +
                 "<img alt='recipe" + i + "' class='foodResultImage rImg' src='" + currentFoodResults[2][i] + "'/>" +
                 "<p class='food-details'> <span>Credit: " + currentFoodResults[3][i] + " " + ", </span><span>" + Math.floor(Number(currentFoodResults[0][i]))+ " Pts</span></p>" + 
               "</a>" +
             "</div>" +
             "<div class='wine-block col-xs-6 col-xl-6 col-l-6'>" +
               "<p class='wine-title'>" + currentWineResults[1][i] + "</p>" + 
-              "<a href='" + currentWineResults[4][i] + "'>" +
+              "<a href='" + currentWineResults[4][i] + "' target='_blank'>" +
                 "<img alt='wine" + i + "' src='" + currentWineResults[2][i] + "' class='wineResultImage rImg'/>" +
                 "<p class='wine-details'> <span>" + currentWineResults[0][i] + " " + "Pts </span><span>"+currentWineResults[6][i]+ " " + ", </span><span>" + currentWineResults[3][i]+ "</span></p>" + 
               "</a>" +
@@ -398,12 +401,15 @@
         );
       }
 
+      //Add the "load more" button at the bottom of the sheet
+      //Keep adding it until there are no more results to display
       if(numResults < maxResults){
         $("#results").append("<a href='#' data='" +  btnIndex + "' id='loadMore'>See More Results</a>");
         $("#loadMore").off();
         $("#loadMore").on("click", function(event){
           event.preventDefault();
           numResults += 5;
+          
           console.log($("#loadMore").attr("data"));
           renderResults($("#loadMore").attr("data"), true);
         })
@@ -472,9 +478,10 @@
     var wLen = wineR[0];
     var returnLen;
 
+    //Check that there is data in both results
     if(fLen !== undefined && wLen !== undefined){
-      returnLen = Math.min(foodR.length, wineR.length);
-      maxResults = returnLen;
+      returnLen = Math.min(foodR.length, wineR.length); //take the one with the lower size
+      maxResults = returnLen; //Set the lower size as the most amount possible to display
     } else {
       return null;
     }
