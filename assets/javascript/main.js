@@ -29,7 +29,7 @@ $(document).ready(function(){
   ];
 
   //Load in the API Keys
- function loadAPIKeys(){
+ /*function loadAPIKeys(){
     $.ajax({
       method: "GET",
       url: "../config.json",
@@ -40,9 +40,11 @@ $(document).ready(function(){
     }).fail(function(err){
       console.log("failed:" + JSON.stringify(err));
     });
-  };
+  };*/
 
-  loadAPIKeys();
+  apiKeys.food = "5433aef115947ae3ef295189e11fba7f";
+  apiKeys.wine = "9423d2c8326f4d2c768425852bce8030";
+  //loadAPIKeys();
 
   //Toggle between wine and food search
   $(".nav-tabs").on("click", function(event){
