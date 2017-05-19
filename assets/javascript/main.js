@@ -203,7 +203,7 @@ $(document).ready(function(){
     $.ajax({
       method: "GET",
       url: fUrl,
-      dataType: "jsonp"
+      dataType: "json"
       // jsonpCallback: 'callback'
     }).done(function(response){
       foodResults.push([userSearch, response, searchType]); //Store the wine results and the search that generated it in an array
