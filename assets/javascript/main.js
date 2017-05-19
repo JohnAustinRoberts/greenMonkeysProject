@@ -89,6 +89,7 @@
     foodRunFlag = false;
     wineRunFlag = false;
     numResults = 5;
+    maxResults = 0;
 
     if(buttonTrigger === false){//Make API call if new search
 
@@ -344,9 +345,9 @@
   }
 
   //return the results to the page 
-  function renderResults(btnIndex){
+  function renderResults(btnIndex, loadMoreOption){
     //append things to DOM
-    if(foodRunFlag === true && wineRunFlag === true){//Only run if both wine and food results are available
+    if((foodRunFlag === true && wineRunFlag === true) || loadMoreOption){//Only run if both wine and food results are available
       $("#results").empty();
       $("#blurb").empty();
       $("#blurb").removeClass("done");
@@ -395,6 +396,18 @@
             "</div>" +
           "</div>"
         );
+      }
+
+      if(numResults < maxResults){
+        $("#results").append("<a href='#' data='" +  btnIndex + "' id='loadMore'>See More Results</a>");
+        $("#loadMore").off();
+        $("#loadMore").on("click", function(event){
+          event.preventDefault();
+          numResults += 5;
+          console.log($("#loadMore").attr("data"));
+          renderResults($("#loadMore").attr("data"), true);
+        })
+
       }
     }
   }
@@ -461,6 +474,7 @@
 
     if(fLen !== undefined && wLen !== undefined){
       returnLen = Math.min(foodR.length, wineR.length);
+      maxResults = returnLen;
     } else {
       return null;
     }
@@ -474,7 +488,7 @@
     }  
   }
 
-  localStorage.clear();
+  //localStorage.clear();
   pageInit();
 //});
 

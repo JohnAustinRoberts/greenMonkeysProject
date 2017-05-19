@@ -106,18 +106,12 @@ footer {
     margin-left: 3px;
 }
 
-.food-title {
-    font-weight: bolder;
-}
-
-.food-details {
-    font-style: italic;
-}
-
+.food-title,
 .wine-title {
     font-weight: bolder;
 }
 
+.food-details,
 .wine-details {
     font-style: italic;
 }
@@ -225,4 +219,8 @@ footer {
 .rImg:hover{
     border: 3px solid gold;
     padding: 0px;
+}
+
+#results {
+    text-align: center;
 }
