@@ -156,7 +156,7 @@ $(document).ready(function(){
   //terms are expected to be passed in space delimited format
   function makeSearchIntoWineURL(userSearch){
     var srch = userSearch.replace(/\s/g, "+");
-    return "http://services.wine.com/api/beta2/service.svc/JSON//catalog?" + 
+    return "https://services.wine.com/api/beta2/service.svc/JSON//catalog?" + 
       "search=" + srch +
       "&size=" + 30 + 
       "&offset=" + 0 + 
@@ -169,7 +169,7 @@ $(document).ready(function(){
   //terms are expected to be passed in space delimited format
   function makeSearchIntoFoodURL(userSearch){
     var srch = userSearch.replace(/\s/g, "%20");
-    return "https://crossorigin.me/http://food2fork.com/api/search?key=" + apiKeys.food + 
+    return "https://food2fork.com/api/search?key=" + apiKeys.food + 
       "&q=" + srch;
   }
 
@@ -201,7 +201,7 @@ $(document).ready(function(){
     $.ajax({
       method: "GET",
       url: fUrl,
-      dataType: "json"
+      dataType: "jsonp"
       // jsonpCallback: 'callback'
     }).done(function(response){
       foodResults.push([userSearch, response, searchType]); //Store the wine results and the search that generated it in an array
