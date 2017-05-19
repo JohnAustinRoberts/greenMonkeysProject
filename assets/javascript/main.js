@@ -97,8 +97,8 @@
       getWines(wineUrl, extractWineResults);
 
     } else if(buttonTrigger === true) {//Skip the API call and reference the cached result
-      extractFoodResults(foodResults[btnIndex][1]);
-      extractWineResults(wineResults[btnIndex][1]);
+      extractFoodResults(foodResults[btnIndex][1], btnIndex);
+      extractWineResults(wineResults[btnIndex][1], btnIndex);
     }
   }
 
@@ -291,7 +291,7 @@
   }
 
   //Take the results out of the food query and store them in an array - return the array
-  function extractFoodResults(obj){
+  function extractFoodResults(obj, btnIndex){
     //Extract the predefined number of results from the object
     for(var i = 0 ; i < numResults ; i++){
       currentFoodResults[0].push(obj.recipes[i].social_rank);
@@ -301,11 +301,11 @@
       currentFoodResults[4].push(obj.recipes[i].source_url);
     } 
     console.log(currentFoodResults)
-    renderResults();
+    renderResults(btnIndex);
   }
 
   //Take the results out of the wine query and store them in an array - return the array
-  function extractWineResults(obj){
+  function extractWineResults(obj, btnIndex){
     //Extract the predefined number of results from the object
     var imgUrl
     for(var i = 0 ; i < numResults ; i++){
@@ -325,11 +325,11 @@
     varietalInformation = extractVarietalInfo(currentWineResults[6][0]);
     varietalInformation = extractVarietalInfo(wineResults[wineResults.length -1][3]);
     console.log(currentWineResults);
-    renderResults();
+    renderResults(btnIndex);
   }
 
   //return the results to the page 
-  function renderResults(){
+  function renderResults(btnIndex){
     var foodTest = currentFoodResults.join("");
     var wineTest = currentWineResults.join("");
 
@@ -369,6 +369,8 @@
         addHistoryButtons();
         $("#wait").toggle("done");
         wineResults[wineResults.length - 1][3] = varietalInformation;
+      } else {
+        $("#blurb").html("<p>About this wine: </p> <p>" +  wineResults[btnIndex][3] + "</p>");
       }
     }
   }
