@@ -11,7 +11,7 @@
 <body class="bg">
   <div class="container">
     <div class="jumbotron" id="tagLine">
-      <h1 class="text-center" id="titleLine">Pair A Cork With It</h1>
+      <h1 class="text-center animation-target" id="titleLine">Pair A Cork With It</h1>
     </div>
     <div class="navigation">
       <ul class="nav nav-tabs nav-justified">
@@ -30,21 +30,15 @@
       </form>
     </div>
 
-    <div class="buttons">
-      <div class="btn-group">
-        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        $$$$ <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a href="#">$</a></li>
-          <li><a href="#">$$</a></li>
-          <li><a href="#">$$$</a></li>
-          <li><a href="#">$$$$</a></li>
-        </ul>
-      </div>
+    <div class="row" id="search-history">
     </div>
 
-    <div class="row" id="search-history">
+    <div class="row done" id="wait">
+      <img src="./assets/images/wait.gif" id="waitimg"/>
+      <p id="wait-text"> Just a moment... </p>
+    </div>
+
+    <div class="row" id="blurb">
     </div>
 
     <div class="row" id="results">
