@@ -81,6 +81,7 @@ $(document).ready(function(){
   //Function determines the type of search and makes function calls
   //that will query the APIs and extract the results
   function performSearch(srch, srchType, btnIndex){
+    $("#wait").toggle("done");
     //Make the inputs into the URL and call the API
     if(srchType === "wine"){
       /*//Reset results holders
@@ -352,6 +353,7 @@ $(document).ready(function(){
 
     //append things to DOM
     if(foodTest !== "" && wineTest !== ""){//Only run if both wine and food results are available
+      $("#wait").toggle("done");
       $("#results").empty();
 
       for(var i = 0 ; i < numResults ; i++){
@@ -402,7 +404,7 @@ $(document).ready(function(){
     //Add buttons with prior search terms
     for(var i = 0 ; i < foodResults.length ; i++){
       $("#search-history").append(  
-        "<button class='btn history-button' id='" + foodResults[i][0] + "--" + i + "'>" + foodResults[i][0] + "</button>"
+        "<button class='btn btn-primary history-button' id='" + foodResults[i][0] + "--" + i + "'>" + foodResults[i][0] + "</button>"
       );
     }
     //Re/attach listeners
