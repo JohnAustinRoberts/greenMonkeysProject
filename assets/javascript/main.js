@@ -61,7 +61,7 @@ $(document).ready(function(){
     buttonTrigger = false; //Tracks how the search was triggered (history button or search submit)
     userSearch = $("#foodtext").val().trim().toLowerCase();
     searchType = $(".active").attr("id").slice(0,4);
-
+    $("#wait").toggle("done");
     //need grab rest of inputs here like state and 
 
     //reset the search box to blank afer a search
@@ -81,7 +81,6 @@ $(document).ready(function(){
   //Function determines the type of search and makes function calls
   //that will query the APIs and extract the results
   function performSearch(srch, srchType, btnIndex){
-    $("#wait").toggle("done");
     //Make the inputs into the URL and call the API
     if(srchType === "wine"){
       /*//Reset results holders
