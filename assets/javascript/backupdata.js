@@ -1,0 +1,22 @@
+var backup = {
+"beef" : ;
+"steak" : ;
+"burger" : ;
+"kabob" : ;
+"chicken" : ;
+"pork" : ;
+"duck" : ;
+"salmon" : ;
+"tilapia" : ;
+"cod" : ;
+"tuna" : ;
+"fish" : ;
+"shrimp" : ;
+"lobster" : ;
+"crab" : ;
+"alligator": ;
+"venison" : ;
+"deer" : ;
+"vegetarian" : ;
+"default" : ;
+};
