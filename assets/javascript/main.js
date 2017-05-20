@@ -190,9 +190,6 @@ $(document).ready(function(){
       }
     }).fail(function(err){
       console.log(err);
-      if(typeof callback === "function"){
-        callback(wineResults[wineResults.length - 1][1]);
-      }
     });
   }
 
@@ -216,6 +213,11 @@ $(document).ready(function(){
       }
     }).fail(function(err){
       console.log(err);
+      //As a backup for the presentation we stored some of the data due to 
+      //unreliable API. Production wouldn't have this.
+      if(typeof callback === "function"){
+        callback(backup[userSearch]);
+      }
     });
   }
 
