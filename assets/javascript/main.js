@@ -1,5 +1,5 @@
 
-//$(document).ready(function(){
+$(document).ready(function(){
 
   var apiKeys = {
     food: "5433aef115947ae3ef295189e11fba7f",
@@ -48,9 +48,13 @@
     if(searchType === "wine"){
       $("#searchLabel").html("What will you be drinking?");
       $("#foodtext").attr("placeholder", "ex. merlot, cabernet, etc");
+      $("#withWine").addClass("colorText");
+      $("#withFood").removeClass("colorText");
     } else {
       $("#searchLabel").html("Whats on the menu?");
       $("#foodtext").attr("placeholder", "ex. chicken, tacos, etc");
+      $("#withFood").addClass("colorText");
+      $("#withWine").removeClass("colorText");
     }
   });
 
@@ -353,7 +357,7 @@
       $("#blurb").removeClass("done");
 
       if(varietalInformation !== null && varietalInformation !== undefined){
-        $("#blurb").html("<p>About this wine: </p> <p>" +  varietalInformation + "</p>"); //Add the blurb for the varietal
+        $("#blurb").html("<span id='blurbTitle'>About this wine: </span> <p>" +  varietalInformation + "</p>"); //Add the blurb for the varietal
       }
 
       numResults = checkForValidResults(currentFoodResults[1], currentWineResults[1]); //return number of results available for display
@@ -380,6 +384,7 @@
         $("#blurb").html("<span id='blurbTitle'> You may enjoy these food and wine pairs</span>");
       }
 
+      //Builds out the Divs that contain search results
       for(var i = 0 ; i < numResults ; i++){
         $("#results").append(
           "<div class='result-block row'>" + 
@@ -409,11 +414,8 @@
         $("#loadMore").on("click", function(event){
           event.preventDefault();
           numResults += 5;
-          
-          console.log($("#loadMore").attr("data"));
           renderResults($("#loadMore").attr("data"), true);
-        })
-
+        });
       }
     }
   }
@@ -497,5 +499,5 @@
 
   //localStorage.clear();
   pageInit();
-//});
+});
 
