@@ -409,10 +409,6 @@ $(document).ready(function(){
         );
       }
 
-      if(!($("#wait").hasClass("done"))){
-        $("#wait").toggle("done");
-      }
-
       //Add the "load more" button at the bottom of the sheet
       //Keep adding it until there are no more results to display
       if(numResults < maxResults){
@@ -422,6 +418,7 @@ $(document).ready(function(){
           event.preventDefault();
           numResults += 5;
           renderResults(Number($("#loadMore").attr("data")), true);
+          $("#wait").css("display", "none");
         });
       }
     }
