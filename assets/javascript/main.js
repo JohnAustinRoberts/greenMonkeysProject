@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-
+  "use strict";
   var apiKeys = {
     food: "5433aef115947ae3ef295189e11fba7f",
     wine: "9423d2c8326f4d2c768425852bce8030"
@@ -213,6 +213,11 @@ $(document).ready(function(){
       }
     }).fail(function(err){
       console.log(err);
+      //As a backup for the presentation we stored some of the data due to 
+      //unreliable API. Production wouldn't have this.
+      if(typeof callback === "function"){
+        callback(backup[userSearch]);
+      }
     });
   }
 
@@ -316,7 +321,6 @@ $(document).ready(function(){
       currentFoodResults[3].push(obj.recipes[i].publisher);
       currentFoodResults[4].push(obj.recipes[i].source_url);
     } 
-    console.log(currentFoodResults)
     foodRunFlag = true;
     renderResults(btnIndex);
   }
@@ -341,9 +345,8 @@ $(document).ready(function(){
       currentWineResults[2][i] = imgUrl.slice(0, imgUrl.length -5) + "l" + imgUrl.slice(imgUrl.length -4);
     } 
 
-    varietalInformation = extractVarietalInfo(currentWineResults[6][0]);
-    varietalInformation = extractVarietalInfo(wineResults[wineResults.length -1][3]);
-    console.log(currentWineResults);
+    varietalInformation = extractVarietalInfo(currentWineResults[6][0]); //Attempt to extract varietal with the varietal returned
+    varietalInformation = extractVarietalInfo(wineResults[wineResults.length -1][3]); //attempt to extract varietal with what is stored in memoory
     wineRunFlag = true;
     renderResults(btnIndex);
   }
@@ -406,6 +409,10 @@ $(document).ready(function(){
         );
       }
 
+      if(!($("#wait").hasClass("done"))){
+        $("#wait").toggle("done");
+      }
+
       //Add the "load more" button at the bottom of the sheet
       //Keep adding it until there are no more results to display
       if(numResults < maxResults){
@@ -414,7 +421,7 @@ $(document).ready(function(){
         $("#loadMore").on("click", function(event){
           event.preventDefault();
           numResults += 5;
-          renderResults($("#loadMore").attr("data"), true);
+          renderResults(Number($("#loadMore").attr("data")), true);
         });
       }
     }
