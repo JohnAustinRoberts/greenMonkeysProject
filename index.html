@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pair A Cork With It</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -14,24 +16,26 @@
       <h1 class="text-center animation-target" id="titleLine">Pair A Cork With It</h1>
       <h2 class="text-center animation-target" id="secondaryTitle">Bringing Wine and Food Together</h2>
     </div>
-    <div class="navigation">
-      <ul class="nav nav-tabs nav-justified">
-        <li class="active" id="foodtab"><a id="withFood" href="#">With Food</a></li>
-        <li id="winetab"><a id="withWine" href="#">With Wine</a></li>
-      </ul>
-    </div>
+    <div class="inputArea">
+      <div class="navigation">
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active" id="foodtab"><a id="withFood" class="colorText" href="#">With Food</a></li>
+          <li id="winetab"><a id="withWine" href="#">With Wine</a></li>
+        </ul>
+      </div>
 
-    <div class="panel-body">
-      <form>
-        <div class="form-group">
-          <label for="food" id="searchLabel">What's on the menu?</label>
-          <input class="form-control" id="foodtext" type="text" placeholder="ex. chicken, tacos, etc">
-        </div>
-        <button class="btn btn-primary" id="submit" type="submit">Submit</button>
-      </form>
-    </div>
-
-    <div class="row" id="search-history">
+      <div class="panel-body">
+        <form id="input-form">
+          <div class="form-group">
+            <label for="food" id="searchLabel">What's on the menu?</label>
+            <input class="form-control" id="foodtext" type="text" placeholder="ex. chicken, tacos, etc">
+          </div>
+          <button class="btn btn-success" id="submit" type="submit">Pair It!</button>
+        </form>
+      </div>
+      
+      <div class="row" id="search-history">
+      </div>
     </div>
 
     <div class="row done" id="wait">
@@ -39,7 +43,7 @@
       <p id="wait-text"> Just a moment... </p>
     </div>
 
-    <div class="row" id="blurb">
+    <div class="row done" id="blurb">
     </div>
 
     <div class="row" id="results">
